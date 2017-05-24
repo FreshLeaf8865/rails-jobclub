@@ -1,0 +1,14 @@
+%p
+  We received a request to set your HireClub email to #{@email}. 
+%p
+  If this is correct, please confirm by clicking the button below.
+
+%p= link_to 'Confirm Email Address', confirmation_url(@resource, confirmation_token: @token)
+
+%p
+  Once you confirm, all future messages about your HireClub account will be sent to #{@email}.  
+
+%p
+  Thanks,
+  %br
+  The HireClub Team

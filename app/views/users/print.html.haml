@@ -1,0 +1,81 @@
+- title "#{@user.display_name}"
+.container
+
+  .row
+    .col-xs-12.col-sm-12.col-md-12.col-lg-12
+      %h1.mb-0
+        = @user.display_name
+  .row
+    .col-xs-12.col-sm-12.col-md-12.col-lg-12
+      - @user.user_roles.by_position.each_with_index do |user_role, index|
+        %span.user_role
+          = user_role.name
+          - comma = index < (@user.user_roles.count - 1) ? " · " : ""
+          = comma
+      - if @user.location.present?
+        ·
+        = @user.location.display_name
+      ·
+      = @user.email
+      %hr
+    
+  .row
+    .col-xs-12.col-sm-12.col-md-8.col-lg-8
+      %h5.mt-3.mb-1
+        = @user.bio
+  .row
+    .col-xs-12.col-sm-12.col-md-8.col-lg-8.milestones
+      %section
+        %h6 Milestones
+      - @milestones.each do |milestone|
+        .milestone
+          %strong
+            = milestone.company.try(:name)
+          %small.text-muted
+            = milestone.start_date.strftime("%b %Y")
+          - if milestone.end_date
+            %small.text-muted
+              = "-" 
+              = milestone.end_date.strftime("%b %Y")
+        %p
+          = milestone.name
+
+      / %section
+      /   %h6 Projects
+        
+    .col-xs-12.col-sm-12.col-md-4.col-lg-4.skills
+      %section
+        %h6 Skills
+        - @user.user_skills.by_position.each do |user_skill|
+          .row.mb-05
+            .col-xs-7.col-sm-7.col-md-8.col-lg-8
+              = user_skill.name
+            .col-xs-5.col-sm-5.col-md-4.col-lg-4
+              .text-right
+                %small.text-muted
+                  = pluralize(user_skill.years, "Year") if user_skill.years > 0
+      %section
+        %h6 Links
+        - if @user.website_url
+          .mb-1
+            = link_display(@user.website_url)
+        .mb-1
+          = link_display(user_url(@user))
+        - if @user.linkedin_url
+          .mb-1
+            = link_display(@user.linkedin_url)
+        - if @user.twitter_url
+          .mb-1
+            = link_display(@user.twitter_url)
+        - if @user.dribbble_url
+          .mb-1
+            = link_display(@user.dribbble_url)
+        - if @user.github_url
+          .mb-1
+            = link_display(@user.github_url)
+        - if @user.medium_url
+          .mb-1
+            = link_display(@user.medium_url)
+        - if @user.imdb_url
+          .mb-1
+            = link_display(@user.imdb_url)

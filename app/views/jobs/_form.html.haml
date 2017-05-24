@@ -1,0 +1,79 @@
+= form_for @job do |f|
+  - if @job.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@job.errors.count, "error")} prohibited this job from being saved:"
+      %ul
+        - @job.errors.full_messages.each do |msg|
+          %li= msg
+  .row
+    .col-sm-8
+      .form-group
+        = f.label :title
+        = f.text_field :name, class: 'form-control', autocomplete: :off, placeholder: "Rails Developer"
+      .form-group
+        = f.label :company
+        = f.text_field :company, class: "form-control autocomplete_company", value: @job.company.try(:name), placeholder: "HireClub", autocomplete: "off"
+      
+        = f.hidden_field :company_id, value: @job.company_id, class: "autocomplete_company_id"
+
+      .form-group
+        = f.label :role
+        = f.text_field :role, class: "form-control autocomplete_role", value: @job.role.try(:name), placeholder: "Developer", autocomplete: "off"
+        = f.hidden_field :role_id, value: @job.role_id, class: "autocomplete_role_id"
+
+      .form-group
+        = f.label :location
+        = f.text_field :location, class: "form-control autocomplete_location", value: @job.location.try(:display_name), placeholder: "My City, CA", autocomplete: "off"
+        = f.hidden_field :location_id, value: @job.location_id, class: "autocomplete_location_id"
+        %small.form-text.text-muted 
+          Where is the job located? Use Anywhere for remote jobs.
+      
+      .form-group
+        = f.label :description
+        = f.text_area :description, class: 'form-control', rows: 5, placeholder: "What exactly are you looking for?"
+        %small.text-muted
+        
+      .form-group
+        = f.label :link
+        = f.text_field :link, class: 'form-control'
+        %small.text-muted
+
+    .col-sm-4
+      %h3 Options
+          
+      .form-check
+        %label.form-check-label
+          = f.check_box :full_time, class: 'form-check-input'
+          Full Time
+      .form-check
+        %label.form-check-label
+          = f.check_box :part_time, class: 'form-check-input'
+          Part Time
+      .form-check
+        %label.form-check-label
+          = f.check_box :contract, class: 'form-check-input'
+          Contract
+      .form-check
+        %label.form-check-label
+          = f.check_box :internship, class: 'form-check-input'
+          Internship
+      .form-check
+        %label.form-check-label
+          = f.check_box :remote, class: 'form-check-input'
+          %i.fa.fa-plane
+          Remote
+
+      %h3.mt-3 Skills
+      .form-group
+        = f.text_field :skills_list, placeholder: "Design, Rails, Marketing"
+
+    
+  = f.submit 'Save', class: "btn btn-lg btn-primary"
+  = link_to 'Cancel', @job, class: "btn btn-lg btn-link" if @job.persisted?
+
+- content_for :head do
+  %link{:href => "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css", :rel => "stylesheet"}/
+  %script{:src => "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"}
+
+:javascript
+  var simplemde = new SimpleMDE({ element: document.getElementById("job_description") });

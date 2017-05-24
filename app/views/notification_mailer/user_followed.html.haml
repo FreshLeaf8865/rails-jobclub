@@ -1,0 +1,6 @@
+%h1
+  = link_to @follower.display_name, @follower
+  followed you on HireClub
+
+%p
+  = link_to "Follow", follow_user_url(@follower)

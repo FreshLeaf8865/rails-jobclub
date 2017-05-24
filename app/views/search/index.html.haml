@@ -1,0 +1,27 @@
+- set_meta_tags title: "Search Results"
+.sub_nav
+  .container
+    %ul.nav.nav-pills
+      = nav_link_to 'All', search_path(q: params[:q]), {class: 'nav-link'}, { :wrapper => 'li', :wrapper_class => "nav-item", ignore_params: true }
+      = nav_link_to 'Jobs', search_jobs_path(q: params[:q]), {class: 'nav-link'}, { :wrapper => 'li', :wrapper_class => "nav-item", ignore_params: true }
+      = nav_link_to 'Projects', search_projects_path(q: params[:q]), {class: 'nav-link'}, { :wrapper => 'li', :wrapper_class => "nav-item", ignore_params: true }
+      = nav_link_to 'Members', search_members_path(q: params[:q]), {class: 'nav-link'}, { :wrapper => 'li', :wrapper_class => "nav-item", ignore_params: false }
+      = nav_link_to 'Companies', search_companies_path(q: params[:q]), {class: 'nav-link'}, { :wrapper => 'li', :wrapper_class => "nav-item", ignore_params: false }
+
+.container.mt-3
+
+  %h5.mb-3
+    = "Search Results for \"#{params[:q]}\""
+  - @results.each do |result|
+    - if result.searchable_type == "Company"
+      = render partial: "/companies/company", locals: {company: result.searchable}
+    - elsif result.searchable_type == "User"
+      = render partial: "/users/user", locals: {user: result.searchable}
+    - elsif result.searchable_type == "Job"
+      = render partial: "/jobs/job", locals: {job: result.searchable}
+    - elsif result.searchable_type == "Project"
+      = render partial: "/search/project", locals: {project: result.searchable}      
+
+  = paginate @results
+
+  

@@ -1,0 +1,59 @@
+- set_meta_tags canonical: story_url(@story)
+- set_meta_tags description: @story.content
+- set_meta_tags og: {type: "article", url: story_url(@story), description: @story.content}
+
+- if @story.cover_uid.present?
+  .jumbotron{style: "height: 65vh; background: url('#{model_image(@story.cover, 1920, 1080, true)}') no-repeat center center; border-radius:0"}
+    &nbsp;
+
+.container.mt-3.mb-5
+  .row
+    .col-sm-12
+      %h1.black
+        = title @story.name
+        - unless @story.published?
+          %span.badge.badge-pill.badge-warning
+            Draft
+    .col-sm-12.col-lg-7
+      .media
+        = link_to image_tag(model_avatar(@story.user.avatar, 200, true), width: 52, class: 'd-flex mr-3 rounded-circle'), @story.user
+        .media-body
+          %h5.mt-0.mb-0
+            = link_to @story.user.display_name, @story.user
+            - if @story.user.is_hiring
+              %span.small
+                %i.fa.fa-bullseye.text-primary
+
+            - if @story.user.is_available
+              %small
+                %i.fa.fa-briefcase.text-success
+          %small
+            = @story.user.primary_role_name
+            - if @story.user.company
+              ·
+              = @story.user.company.name
+            - if @story.published?
+              ·
+              = local_time(@story.published_on)
+            - if @story.tags.any?
+              ·
+              = @story.tags_list
+          
+      %hr
+        .row
+          .col-sm-2
+            = render partial: "/likes/like_button", locals: { likeable: @story }
+          .col.sm-10
+            = link_to 'Publish', publish_story_path(@story), class: "btn btn-primary btn-sm" if @story.unpublished? && policy(@story).publish?
+            = link_to 'Edit', edit_story_path(@story), class: "btn btn-secondary btn-sm" if policy(@story).edit?
+            = link_to 'Delete', @story, :method => :delete, :data => { :confirm => 'Are you sure you want to delete this story? This cannot be undone.' }, class: "btn btn-danger btn-sm" if policy(@story).edit?
+
+      %hr
+
+    .col-sm-12.col-lg-7
+      = markdown(@story.content)
+
+      %hr
+      = render partial: "comments/comments", locals: { commentable: @story }
+      = render partial: "comments/form", locals: { commentable: @story } 
+

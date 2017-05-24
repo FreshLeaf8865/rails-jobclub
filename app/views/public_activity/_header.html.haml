@@ -1,0 +1,8 @@
+.media.mb-2
+  = link_to image_tag(model_avatar(activity.owner.avatar, 200, true), width: 50, class: "d-flex align-self-center mr-3 rounded-circle"), activity.owner
+  .media-body
+    = link_to activity.owner.display_name, activity.owner
+    = text.html_safe
+    %p
+      %small.text-muted
+        = local_time_ago(activity.created_at)

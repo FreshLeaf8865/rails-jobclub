@@ -1,0 +1,268 @@
+- set_meta_tags title: @user.display_name
+- set_meta_tags canonical: user_url(@user)
+- set_meta_tags keywords: @user.key_words
+- set_meta_tags image_src: model_image(@user.avatar, 200, 200, true)
+- set_meta_tags og: {type: "profile", image: model_image(@user.avatar, 200, 200, true), url: user_url(@user) }
+
+- if @user_completion.present? && @user_completion.percent_complete < 90
+  .alert.alert-info{:role => "alert"}
+    .container.text-center
+      Your Profile is
+      %strong 
+        = "#{@user_completion.percent_complete}% Complete"
+    .container.text-center
+      %a.btn.btn-primary.btn-sm{href: next_user_completion_path(@user_completion)}
+        = @user_completion.next_step
+      .row.justify-content-center.mt-2
+        .col-lg-3.col-md-4
+          .progress
+            .progress-bar.bg-success.user_progress{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "25", :role => "progressbar", :style => "width: #{@user_completion.percent_complete}%; height: 4px;"}
+
+.container.mt-5
+  .row
+    .col-sm-8
+      .media
+        = image_tag(model_avatar(@user.avatar, 200, true), width: 100, class: "d-flex mr-3 rounded-circle")
+        .media-body
+          %h1.black
+            - link = @user.website_url.present? ? @user.website_url : user_url(@user)
+            = link_to @user.display_name, link
+            - if @user.is_hiring
+              %span.small
+                = link_to '', data: {toggle:"tooltip", placement: "bottom"}, title: "I am hiring" do
+                  %i.fa.fa-bullseye.text-primary
+            - if @user.is_available
+              %span.small
+                = link_to '', data: {toggle:"tooltip", placement: "bottom"}, title: "I am available to hire" do
+                  %i.fa.fa-briefcase.text-success
+            - if @user.open_to_new_opportunities
+              %span.small
+                = link_to '', data: {toggle:"tooltip", placement: "bottom"}, title: "I am open to new opportunities" do
+                  %i.fa.fa-handshake-o
+            
+
+          - if @user.user_roles.any? || viewing_self?(@user)
+            %h5
+              - @user.user_roles.by_position.each_with_index do |user_role, index|
+                %span.user_role
+                  = link_to user_role.name, user_role.role
+                  / - if policy(user_role).edit?
+                  /   = link_to edit_user_role_path(user_role), class: "edit_user_roles ml-1 mr-1 display_none text-muted hover_primary" do
+                  /     %i.fa.fa-pencil
+
+                  - if policy(user_role).destroy?
+                    = link_to user_role, method: :delete, data: { confirm: "Remove #{user_role.name} role?" }, remote: true, class: "delete_user_roles display_none text-muted hover_danger" do
+                      %i.fa.fa-trash-o
+                  - comma = index < (@user.user_roles.count - 1) ? " · " : ""
+                  = comma
+
+              - if @user == current_user
+                %a.add_role_btn.btn.btn-primary.btn-sm{href: new_user_role_path}
+                  %i.fa.fa-plus
+            
+          %small
+            - if @user.company.present?
+              = link_to @user.company.name, @user.company
+              
+            - if @user.location.present?
+              ·
+              = @user.location.name
+            ·
+            - if @user == current_user
+              = link_to new_user_skill_path do
+                = display_years(@user.years_experience)
+                Experience
+            - else
+              = display_years(@user.years_experience)
+              Experience
+            - if @user.open_to_remote
+              ·
+              %i.fa.fa-plane.text-muted
+          %br
+            - unless viewing_self?(@user)
+              = link_to_follow_user(@user, current_user)
+            = link_to followers_user_path(@user) do
+              %span.user_followers_count
+                = pluralize(@user.followers.count, "Follower")
+            ·
+            = link_to following_user_path(@user) do
+              = @user.follows_scoped.count
+              Following
+        
+
+    .col-sm-3
+      - if viewing_self?(@user)
+        / - if @user.review_requests.any?
+        /   = link_to "Check Review Status", review_request_path(@user.review_requests.last), class: "btn btn-info btn-block"
+        / - else
+        /   - if @user_completion.can_request_review?
+        /     = link_to "Request Review", new_review_request_path, class: "btn btn-success btn-block"
+          
+        - unless @user.onboarded?
+          = link_to "Complete Profile", onboarding_index_path, class: "btn btn-primary btn-block"
+        - else
+          = link_to "Edit", edit_user_registration_path, class: "btn btn-primary btn-block"
+      - else
+        = link_to "Message", between_conversations_path(user_ids: [current_user.id, @user.id]), class: "btn btn-primary btn-block" if policy(Conversation).create?
+        
+      - if viewing_self?(@user) || is_admin?
+        = link_to "Print", print_user_path(@user), class: "btn btn-info btn-block"
+      - if is_admin? 
+        = link_to "Admin", rails_admin.edit_path(model_name: 'user', id: @user.id), class: "btn btn-danger btn-block"
+      %p.mt-4
+        - if @user.website_url.present?
+          = link_to @user.website_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.website_url) do
+            %i.fa.fa-globe.ml-2
+        - if @user.facebook_url.present?
+          = link_to @user.facebook_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.facebook_url) do
+            %i.fa.fa-facebook.ml-2
+        - if @user.twitter_url.present?
+          = link_to @user.twitter_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.twitter_url) do
+            %i.fa.fa-twitter.ml-2
+        - if @user.dribbble_url.present?
+          = link_to @user.dribbble_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.dribbble_url) do
+            %i.fa.fa-dribbble.ml-2
+        - if @user.github_url.present?
+          = link_to @user.github_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.github_url) do
+            %i.fa.fa-github.ml-2
+        - if @user.linkedin_url.present?
+          = link_to @user.linkedin_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.linkedin_url) do
+            %i.fa.fa-linkedin.ml-2
+        - if @user.medium_url.present?
+          = link_to @user.medium_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.medium_url) do
+            %i.fa.fa-medium.ml-2
+        - if @user.instagram_url.present?
+          = link_to @user.instagram_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.instagram_url) do
+            %i.fa.fa-instagram.ml-2
+        - if @user.imdb_url.present?
+          = link_to @user.imdb_url, target: "_blank", data: {toggle:"tooltip", placement: "bottom"}, title: link_display(@user.imdb_url) do
+            %i.fa.fa-imdb.ml-2            
+
+  - if @user.bio.present?
+    .row
+      .col-12
+        %hr
+          %p.lead.mt-4.mb-4
+            = @user.bio
+        %hr
+
+.container.mb-5
+  .row
+    .col-sm-8
+      - @user.companies.distinct.each do |company|
+
+        = link_to image_tag(company_avatar(company.avatar, 200, true), width: 50, height: 50, class:"rounded"), company, data: {toggle:"tooltip", placement: "bottom"}, title: company.name
+
+  .row
+    .col-sm-8
+      - if @user.milestones.any? || viewing_self?(@user)
+        %hr
+        %h6.mt-4.mb-4
+          Milestones
+          - if @user == current_user
+            %a.btn.btn-primary.btn-sm{href: new_milestone_path}
+              %i.fa.fa-plus
+        - if viewing_self?(@user) && @user.milestones.count < 5
+          %p
+            = link_to new_milestone_path, class: "btn btn-sm btn-warning" do
+              Add at least
+              = pluralize(5 - @user.milestones.count, "more Milestone")
+
+
+
+        = render @first_milestones
+        - if @rest_milestones.any?
+          .mb-2
+            %a.toggle_skills{"aria-controls" => "collapseMilestones", "aria-expanded" => "false", "data-toggle" => "collapse", :href => "#collapseMilestones"}
+              View All
+          #collapseMilestones.collapse
+            = render @rest_milestones
+          
+    .col-sm-4
+      - if @user.user_skills.any? || viewing_self?(@user)
+        %hr
+        %h6.mt-4.mb-4
+          Skills
+          - if @user == current_user
+            %a.btn.btn-primary.btn-sm{href: new_user_skill_path}
+              %i.fa.fa-plus
+      
+      - if viewing_self?(@user)
+        - if @user.skills.count < 5
+          %p
+            = link_to new_user_skill_path, class: "btn btn-sm btn-warning" do
+              Add at least
+              = pluralize(5 - @user.skills.count, "more Skill")
+        #sortable_user_skills
+          = render @user_skills
+      - else
+        = render @first_skills
+        - if @rest_skills.any?
+          .mb-2
+            %a.toggle_skills{"aria-controls" => "collapseSkills", "aria-expanded" => "false", "data-toggle" => "collapse", :href => "#collapseSkills"}
+              View All
+          #collapseSkills.collapse
+            = render @rest_skills
+
+
+  - if @user.projects.by_position.exists? || viewing_self?(@user)
+    %hr
+    %h6.mt-4.mb-4
+      Projects
+      - if viewing_self?(@user)
+        %a.btn.btn-primary.btn-sm{href: new_project_path}
+          %i.fa.fa-plus
+
+    - if viewing_self?(@user) && @user.projects.count < 3
+      %p
+        = link_to new_project_path, class: "btn btn-sm btn-warning" do
+          Add at least
+          = pluralize(3 - @user.projects.count, "more Project")
+    
+
+    .row
+      = render @user.projects.by_position
+    
+  - if @user.badges.any?
+    .row
+      .col-sm-12
+        %hr
+          %h6.mt-4.mb-4
+            Badges
+        - @user.badges.by_position.each do |badge|
+          .user_badge.mb-2
+            = link_to image_tag(model_image(badge.avatar, 200, 200, true), width: 50, class:"rounded"), badge
+            = link_to badge.name, badge
+
+.container.mb-5
+  - if viewing_self?(@user) || is_admin?
+    .row
+      .col-sm-12
+        
+        %h6.mt-4.mb-4
+          Resumes
+    .row
+      .col-sm-12
+        - if @user.resumes.exists?
+          %table.table
+            %thead
+              %tr
+                %th Name
+                %th Uploaded
+
+            %tbody
+              - @user.resumes.by_newest.each do |resume|
+                %tr
+                  - if resume.file_uid.present?
+                    %td
+                      = link_to resume.file_name, resume.file.remote_url, class: "btn btn-primary"  
+                    %td
+                      = link_to resume.created_at.strftime("%D %r"), resume
+        - else
+          - if viewing_self?(@user)
+            %a.btn.btn-primary{href: new_resume_path}
+              = "Upload Resume"
+
+
+
+

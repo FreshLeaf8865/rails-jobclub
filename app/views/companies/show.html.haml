@@ -1,0 +1,74 @@
+- set_meta_tags canonical: company_url(@company)
+- set_meta_tags image_src: model_image(@company.avatar, 200, 200, true)
+- set_meta_tags description: @company.tagline
+- set_meta_tags og: {type: "profile", image: model_image(@company.avatar, 200, 200, true)}
+
+.container.mt-5.mb-5
+  .row
+    .col-sm-8
+      .media
+        = image_tag(company_avatar(@company.avatar, 200, true), width: 100, class: "d-flex mr-3 rounded")
+        .media-body
+          %h1.black
+            = title @company.name
+          = @company.tagline
+          %p
+            = link_to @company.website_url, @company.website_url if @company.website_url.present?
+            %br
+            - @company.tags.each do |tag|
+              %span.badge.badge-pill.badge-default
+                = tag
+            %br
+            = link_to_follow_company(@company, current_user)
+            %span.company_followers_count
+              = pluralize(@company.followers.count, "Follower")
+
+    .col-sm-3
+      = link_to 'Edit', edit_company_path(@company), class: "btn btn-info btn-block" if policy(@company).edit?
+      = link_to 'Refresh', refresh_company_path(@company), class: "btn btn-secondary btn-block" if policy(@company).refresh? && @company.facebook_url.present?
+      = link_to "Admin", rails_admin.edit_path(model_name: 'company', id: @company.id), class: "btn btn-danger btn-block" if current_user && current_user.is_admin
+
+      %p.mt-4
+        - if @company.facebook_url.present?
+          = link_to @company.facebook_url, target: "_blank" do
+            %i.fa.fa-facebook.ml-2
+        - if @company.twitter_url.present?
+          = link_to @company.twitter_url, target: "_blank" do
+            %i.fa.fa-twitter.ml-2
+        - if @company.instagram_url.present?
+          = link_to @company.instagram_url, target: "_blank" do
+            %i.fa.fa-instagram.ml-2
+        - if @company.angellist_url.present?
+          = link_to @company.angellist_url, target: "_blank" do
+            %i.fa.fa-angellist.ml-2
+  .row
+    .col-sm-8
+      - if @company.jobs.any?
+        %hr
+        %h6.mt-4.mb-4
+          Jobs
+        = render partial: "jobs/job", collection: @company.jobs.recent
+
+      - if @company.milestones.any?
+        %h6.mt-4.mb-4
+          Milestones
+        - @company.milestones.by_newest.each do |milestone|
+          .row.user_milestone.mb-2
+            .col-sm-4.col-md-3.col-lg-2
+              = milestone.start_date.strftime("%b %Y")
+            .col-sm-8.col-md-9.col-lg-10
+              = link_to milestone.user do
+                = image_tag(model_avatar(milestone.user.avatar, 200, true), width: 26, class: ' rounded-circle')
+                = milestone.user.display_name
+              ·
+
+              - if milestone.link.present?
+                = link_to milestone.name, milestone.link, target: "_blank"
+              - else
+                = milestone.name
+      - if @company.users.any?
+        %hr
+        %h6.mt-4.mb-4
+          Employees
+        = render partial: "users/user", collection: @company.users
+

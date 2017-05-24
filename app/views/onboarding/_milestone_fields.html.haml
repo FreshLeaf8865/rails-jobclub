@@ -1,0 +1,19 @@
+.nested-fields
+  .row
+    .col-5
+      .form-group
+        = f.label "Date"
+        %br
+        = f.date_select :start_date, {end_year: Date.today.year + 1, start_year: Date.today.year - 30, discard_day: true, order: [:month,:year]}
+    .col-6
+      .form-group
+        = f.label :milestone
+        = f.text_field :name, class: "form-control", placeholder: "Founded HireClub with 25 of my friends",maxlength: 140
+
+    .col-1
+      .form-group
+        %label
+          &nbsp;
+        = link_to_remove_association f, class: "btn btn-default" do
+          .text-danger
+            %i.fa.fa-trash-o

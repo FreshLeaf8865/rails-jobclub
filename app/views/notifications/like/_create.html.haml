@@ -1,0 +1,14 @@
+- like = activity.trackable
+- likeable = like.likeable
+
+- if like.likeable_type == "UserBadge"
+  - object = like.likeable_name
+  - link = user_path(likeable.user)
+- elsif like.likeable_type == "Comment"
+  - object = like.likeable.commentable.name
+  - link = url_for(like.likeable.commentable)
+- else
+  - object = like.likeable.name
+  - link = url_for(likeable)
+
+= render partial: "/notifications/item", locals: {activity: activity, verb: "liked", object: object, link: link}

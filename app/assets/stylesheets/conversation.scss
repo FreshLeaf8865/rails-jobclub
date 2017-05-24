@@ -1,0 +1,149 @@
+
+.conversations_show {
+  overflow-y: hidden;
+
+  footer {
+    display: none;
+  }
+
+  .list-group-item {
+    border-radius: 0;
+    border: none;
+    border-top: solid 1px #EAEEF1;
+    border-bottom: solid 1px #EAEEF1;
+  }
+  .list-group-item:first-child {
+    border-top: none;
+  }
+  
+  .list-group-item.active {
+    color: inherit;
+    background-color: #EAEEF1;
+    border-color: #EAEEF1;
+  }
+  .conversation_cell {
+    font-weight: inherit;
+  }
+  .unread {
+    font-weight: bold;
+    .conversation_preview {
+      font-weight: bold;
+    }
+  }
+}
+
+#conversations_header {
+  height: 72px;
+  padding: 10px;
+  border-bottom: solid 1px #EAEEF1;
+}
+
+#conversation_list {
+  height: calc(100vh - 128px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#messages_container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 56px);
+  border-left: solid 1px #EAEEF1;
+}
+
+#messages_header {
+  height: 72px;
+  padding: 10px;
+  border-bottom: solid 1px #EAEEF1;
+}
+
+#messages {
+  padding: 10px;
+  // height: 300px;
+  flex-grow:1;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+#messages_input {
+  height: 48px;
+}
+
+#message_text {
+  border-radius: 0;
+  border: none;
+  border-top: solid 1px #EAEEF1;
+}
+
+
+.message {
+  margin-bottom: 4px;
+}
+
+.day_cell {
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 8px;
+  margin-bottom: 8px;    
+  letter-spacing: 1px;
+  font-size: 75%;
+  color: #A9BCD0;
+}
+
+.unread_cell {
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 8px;
+  margin-bottom: 8px;    
+  letter-spacing: 1px;
+  color: #8783D1;
+  font-size: 75%;
+  font-weight: 600;
+}
+
+.my_message {
+  text-align: right;
+  .message_bubble {
+    background: #449DD1;
+    color: white;
+  }
+}
+
+.message_bubble {
+  background : #EAEEF1;
+  border-radius: 16px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: inline-block;
+  margin-bottom: 0;
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
+.presence_container {
+  width: 48px;
+  height: 48px;
+}
+
+.presence {
+  width: 12px;
+  height: 12px;
+  border-radius: 12px;
+  bottom: 12px;
+  left: 36px;
+  background: #EAEEF1;
+  position: relative;
+  box-sizing: border-box;
+  border: 2px solid white;
+}
+
+.presence_active {
+  background: #7ED321;
+}
+#typing_indicator {
+  display: none;
+}

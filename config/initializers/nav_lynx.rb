@@ -1,0 +1,1 @@
+Rails.application.config.nav_lynx.selected_class = 'active'

@@ -1,0 +1,27 @@
+.container.mt-5.mb-5
+  .row
+    .col-sm-12
+
+      %h1
+        - if current_user == @review_request.user
+          Your Profile Review
+        - else
+          #{@review_request.user.display_name}'s Profile Review
+      %p
+        %b Submitted:
+        = @review_request.created_at
+      %p
+        %b Goal:
+        = @review_request.goal   
+      %p
+        %b Status:
+        = @review_request.status
+      / %p
+      /   %b Reviewer:
+        
+
+      %hr
+      / = link_to 'Cancel Review', @review_request, :method => :delete, :data => { :confirm => 'Are you sure you want to cancel your review?' }, class: "btn btn-danger btn-sm" if policy(@review_request).destroy?
+      = render partial: "comments/comments", locals: {commentable: @review_request}
+      = render partial: "comments/form", locals: {commentable: @review_request}
+      

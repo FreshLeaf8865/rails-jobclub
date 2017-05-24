@@ -1,0 +1,20 @@
+.col-sm-6.col-md-4.project
+  .card.mb-4
+    = cache [project, current_user] do
+      .card-block
+        = link_to project_path(project) do
+          %img{:alt => project.name, :src => model_image(project.image, 800, 600, true), width: "100%",data: {toggle:"tooltip", placement: "bottom"}, title: truncate(project.description, length: 160) }
+        .card-title.mt-2
+          - if project.name.present?
+            = link_to project.name, project
+
+          - if policy(project).edit?
+            = link_to edit_project_path(project), class: "edit_user_projects ml-1 mr-1 display_none text-muted hover_primary " do
+              %i.fa.fa-pencil
+
+          - if policy(project).destroy?
+            = link_to project_path(project), method: :delete, data: { confirm: "Remove #{project.name} project?" }, remote: true, class: "delete_user_projects display_none text-muted hover_danger" do
+              %i.fa.fa-trash-o
+
+        .card-text
+          = render partial: "/likes/like_button", locals: { likeable: project }

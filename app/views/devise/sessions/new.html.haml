@@ -1,0 +1,33 @@
+- set_meta_tags title: "Login"
+.container.mt-5.mb-5
+  .row
+    .col-sm-6.offset-sm-3.col-lg-4.offset-lg-4
+      / %h2 Log in
+
+      = link_to omniauth_authorize_path(resource, 'facebook'), class: "btn btn-primary btn-lg btn-block btn_facebook" do
+        %i.fa.fa-facebook-square{"aria-hidden" => "true"}
+        Login with Facebook
+
+      = link_to user_google_oauth2_omniauth_authorize_path, class: "btn btn-primary btn-lg btn-block btn_google" do
+        %i.fa.fa-google{"aria-hidden" => "true"}
+        Login with Google
+
+      .text-center.mt-3
+        OR
+
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        .form-group
+          = f.label :email
+          = f.email_field :email, class: 'form-control'
+        .form-group
+          = f.label :password
+          = f.password_field :password, autocomplete: "off", class: 'form-control'
+        - if devise_mapping.rememberable?
+          .checkbox
+            %label
+              = f.check_box :remember_me
+              Remember Me
+            / = f.label :remember_me
+        
+        = f.submit "Login", class: "btn btn-primary btn-block"
+      = render "devise/shared/links"

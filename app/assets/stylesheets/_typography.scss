@@ -1,0 +1,36 @@
+.uppercase {
+  text-transform: uppercase;
+}
+
+.titlecase {
+  text-transform: capitalize;
+}
+
+.letterspace {
+  letter-spacing: 1px
+}
+
+
+.light {
+  font-weight: 300;
+}
+
+.semi_bold {
+  font-weight: 600;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.black {
+  font-weight: 900;
+}
+
+h6 {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  // opacity: 0.3;
+}

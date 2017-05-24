@@ -1,0 +1,10 @@
+- set_meta_tags title: "Feed"
+.container.mt-5.mb-5
+  .infinite-activities
+    .row
+      .col-md-8.col-lg-6.activities
+        = render_activities(@activities, locals: { active_user: current_user}, layout: :activity)
+    .row
+      .col-sm-12
+        %p.pagination
+          = link_to_next_page(@activities, 'Next Page', :remote => true)

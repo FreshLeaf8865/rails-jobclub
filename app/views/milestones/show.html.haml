@@ -1,0 +1,46 @@
+.container.mt-5.mb-5
+  .row
+    .col-md-6
+      .media
+        = link_to image_tag(model_avatar(@milestone.user.avatar, 200, true), width: 52, class: 'd-flex mr-3 rounded-circle'), @milestone.user
+        .media-body
+          %h5.mt-0
+            = link_to @milestone.user.name, @milestone.user
+          - if @milestone.company
+            %p
+              For
+              = link_to @milestone.company.name, @milestone.company
+      
+      %h2.mt-2
+        = @milestone.name
+
+      %p.text-muted
+        = @milestone.start_date.strftime("%b %Y")
+        - if @milestone.end_date      
+          = "-"
+          = @milestone.end_date.strftime("%b %Y")
+        - if policy(@milestone).edit?
+          = link_to edit_milestone_path(@milestone), class: "btn btn-primary btn-sm" do
+            %i.fa.fa-pencil.mr-1
+            Edit
+
+      - if @milestone.skills_list.present?
+        %h6 Skills
+        %p
+          - @milestone.skills.each do |skill|
+            %span.badge.badge-pill.badge-info
+              = skill
+          
+      %p
+        = @milestone.description  
+      %hr
+      .row
+        .col-6
+          - if @milestone.link
+            = link_to link_host(@milestone.link), @milestone.link, target: "_blank"
+        .col-6
+          .pull-right
+            = render partial: "/likes/like_button", locals: { likeable: @milestone }      
+      %hr
+      = render partial: "comments/comments", locals: {commentable: @milestone}
+      = render partial: "comments/form", locals: {commentable: @milestone}

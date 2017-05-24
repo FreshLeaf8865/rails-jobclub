@@ -1,0 +1,10 @@
+%h4
+  = link_to @project.user.display_name, @project.user
+  added a project
+%h2
+  = link_to @project.name, @project
+
+= link_to image_tag(model_image(@project.image, 800, 600, true), width: "100%"), @project
+
+%p
+  = link_to "View Project", @project

@@ -1,0 +1,19 @@
+.user_skill.mb-3{data: { id: user_skill.id, position: user_skill.position  }, class: "user_skill_id_#{user_skill.id}" }
+  - if policy(user_skill).edit?
+    %span.drag_handle.mr-1
+      %i.fa.fa-bars
+
+  %span.semi_bold
+    = link_to user_skill.name, projects_path(username: user_skill.user.username, skill: user_skill.name)
+  %small
+    = display_years(user_skill.years) if user_skill.years > 0
+
+  - if policy(user_skill).edit?
+    = link_to edit_user_skill_path(user_skill), class: "edit_user_skills ml-1 mr-1 display_none text-muted hover_primary" do
+      %i.fa.fa-pencil
+
+  - if policy(user_skill).destroy?
+    = link_to user_skill, method: :delete, data: { confirm: "Remove #{user_skill.name} skill?" }, remote: true, class: "delete_user_skills display_none text-muted hover_danger" do
+      %i.fa.fa-trash-o
+  .progress.mt-1
+    .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "25", :role => "progressbar", :style => "width: #{user_skill.bar_width}%; height: 2px;"}

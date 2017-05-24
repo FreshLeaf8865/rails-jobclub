@@ -1,0 +1,24 @@
+.container.mt-5.mb-5
+  .row
+    .col-sm-12
+
+      %h1 Review Requests
+
+      %table.table
+        %thead
+          %tr
+            %th Status
+            %th Submitted
+            %th
+            %th
+
+        %tbody
+          - @review_requests.each do |review_request|
+            %tr
+              %td
+                = link_to review_request.status, review_request
+              %td= review_request.created_at
+              %td= link_to 'Cancel Request', review_request, :method => :delete, :data => { :confirm => 'Are you sure you want to cancel your review? You will lose your place in line.' }, class: "btn btn-danger btn-sm" if policy(review_request).destroy?
+
+      %hr
+      = link_to 'Request Review', new_review_request_path, class: "btn btn-success" unless @review_requests.any?

@@ -1,0 +1,36 @@
+- user = activity.owner
+- job = activity.trackable
+
+= render partial: "/public_activity/header", locals: {activity: activity, text: "posted a job"}
+- following = user
+.media
+  = link_to image_tag(model_avatar(job.company.avatar, 200, true), width: 100, class: "d-flex align-self-center mr-3 rounded"), job
+  .media-body
+    %h5.mt-0
+      = link_to job.name, job
+    = job.role.name if job.role
+    ·
+    = job.location.display_name
+    %p
+      = job.skills_list.split(",").join(" · ")
+      %br
+      - if job.full_time
+        %span.badge.badge-pill.badge-primary
+          Full Time
+      - if job.part_time
+        %span.badge.badge-pill.badge-default
+          Part Time
+      - if job.contract
+        %span.badge.badge-pill.badge-info
+          Contract
+      - if job.internship
+        %span.badge.badge-pill.badge-default
+          Internship
+      - if job.remote
+        %span.badge.badge-pill.badge-success
+          %i.fa.fa-plane
+          Remote
+
+= render partial: "/likes/like_button", locals: { likeable: job }
+
+      

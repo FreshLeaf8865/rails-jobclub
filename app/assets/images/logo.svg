@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1024px" height="1024px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>favicon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="favicon">
+            <g id="logo_mobile">
+                <circle id="Oval" fill="#6070E9" cx="512" cy="512" r="512"></circle>
+                <polygon id="H" fill="#FFFFFF" points="600.64 704 710.72 704 710.72 277.12 600.64 277.12 600.64 436.48 423.36 436.48 423.36 277.12 313.28 277.12 313.28 704 423.36 704 423.36 532.48 600.64 532.48"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

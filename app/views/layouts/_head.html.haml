@@ -1,0 +1,58 @@
+%head
+  %link{:href => "/manifest.json", :rel => "manifest"}/
+  %script{:async => "", :src => "https://cdn.onesignal.com/sdks/OneSignalSDK.js"}
+  :javascript
+    var OneSignal = window.OneSignal || [];
+    OneSignal.push(["init", {
+      appId: "#{Rails.application.secrets.onesignal_app_id}",
+      autoRegister: false,
+      notifyButton: {
+        enable: true /* Set to false to hide */
+      }
+    }]);
+
+  %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
+  
+  = display_meta_tags site: 'HireClub', reverse: true, og: { title: :title, image: image_path("og_meta.png")}, fb: {app_id: Rails.application.secrets.facebook_app_id}
+  
+  = stylesheet_link_tag 'application', media: 'all'
+  
+  %script{:src => "https://use.fontawesome.com/c1a60c5ded.js"}
+  
+  = csrf_meta_tags
+
+  %link{:href => image_path("favicon/apple-touch-icon-57x57.png"), :rel => "apple-touch-icon-precomposed", :sizes => "57x57"}
+  %link{:href => image_path("favicon/apple-touch-icon-114x114.png"), :rel => "apple-touch-icon-precomposed", :sizes => "114x114"}
+  %link{:href => image_path("favicon/apple-touch-icon-72x72.png"), :rel => "apple-touch-icon-precomposed", :sizes => "72x72"}
+  %link{:href => image_path("favicon/apple-touch-icon-144x144.png"), :rel => "apple-touch-icon-precomposed", :sizes => "144x144"}
+  %link{:href => image_path("favicon/apple-touch-icon-60x60.png"), :rel => "apple-touch-icon-precomposed", :sizes => "60x60"}
+  %link{:href => image_path("favicon/apple-touch-icon-120x120.png"), :rel => "apple-touch-icon-precomposed", :sizes => "120x120"}
+  %link{:href => image_path("favicon/apple-touch-icon-76x76.png"), :rel => "apple-touch-icon-precomposed", :sizes => "76x76"}
+  %link{:href => image_path("favicon/apple-touch-icon-152x152.png"), :rel => "apple-touch-icon-precomposed", :sizes => "152x152"}
+  %link{:href => image_path("favicon/favicon-196x196.png"), :rel => "icon", :sizes => "196x196", :type => "image/png"}
+  %link{:href => image_path("favicon/favicon-96x96.png"), :rel => "icon", :sizes => "96x96", :type => "image/png"}
+  %link{:href => image_path("favicon/favicon-32x32.png"), :rel => "icon", :sizes => "32x32", :type => "image/png"}
+  %link{:href => image_path("favicon/favicon-16x16.png"), :rel => "icon", :sizes => "16x16", :type => "image/png"}
+  %link{:href => image_path("favicon/favicon-128.png"), :rel => "icon", :sizes => "128x128", :type => "image/png"}
+  %link{:href => image_path("favicon/favicon.ico"), :rel => "shortcut icon"}
+  %meta{:content => "HireClub", :name => "application-name"}
+  %meta{:content => "#FFFFFF", :name => "msapplication-TileColor"}
+  %meta{:content => image_path("favicon/mstile-144x144.png"), :name => "msapplication-TileImage"}
+  %meta{:content => image_path("favicon/mstile-70x70.png"), :name => "msapplication-square70x70logo"}
+  %meta{:content => image_path("favicon/mstile-150x150.png"), :name => "msapplication-square150x150logo"}
+  %meta{:content => image_path("favicon/mstile-310x150.png"), :name => "msapplication-wide310x150logo"}
+  %meta{:content => image_path("favicon/mstile-310x310.png"), :name => "msapplication-square310x310logo"}
+
+  %meta{:name => "currentUser", :content => current_user.try(:id)}
+  
+  :javascript
+    (function(d) {
+      var config = {
+        kitId: 'hfy6svk',
+        scriptTimeout: 3000,
+        async: true
+      },
+      h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+    })(document);
+  
+  = yield :head

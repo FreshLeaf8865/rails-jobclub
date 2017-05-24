@@ -1,0 +1,5 @@
+%p
+  %small.text-muted
+    = local_time_ago(activity.created_at)
+  %br
+  = render partial: "/likes/like_button", locals: { likeable: activity.trackable } if activity.trackable.respond_to?(:likeable?)

@@ -1,0 +1,16 @@
+.container.mt-5.mb-5
+  %p#notice= notice
+
+  %p
+    %b User:
+    = @user_skill.user
+  %p
+    %b Years:
+    = @user_skill.years
+  %p
+    %b Skill:
+    = @user_skill.skill
+
+  = link_to 'Edit', edit_user_skill_path(@user_skill)
+  \|
+  = link_to 'Back', user_skills_path

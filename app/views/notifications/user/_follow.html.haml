@@ -1,0 +1,9 @@
+- following = activity.trackable
+- if following == current_user
+  - object = "you"
+  - link = url_for(activity.owner)
+- else
+  - object = following.display_name
+  - link = url_for(following)
+
+= render partial: "/notifications/item", locals: {activity: activity, verb: "followed", object: object, link: link}

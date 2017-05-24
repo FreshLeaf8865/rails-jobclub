@@ -1,0 +1,47 @@
+.display_none {
+  display: none;
+}
+
+.user_role:hover .edit_user_roles, .user_role:hover .delete_user_roles { 
+   display: inline;
+}
+
+.user_skill:hover .edit_user_skills, .user_skill:hover .delete_user_skills { 
+   display: inline;
+}
+
+
+.project:hover .edit_user_projects, .project:hover .delete_user_projects { 
+   display: inline;
+}
+
+.user_milestone:hover .edit_user_milestones, .user_milestone:hover .delete_user_milestones {
+  display: inline; 
+}
+
+.user_milestone:hover .milestone_description {
+  display: block; 
+}
+
+.hover_primary {
+  :hover {
+    color: $brand-primary;
+  }
+}
+
+.hover_danger {
+  :hover {
+    color: $brand-danger;
+  }
+}
+.toggle_skills {
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+  color: #9B9AAC;
+}
+.drag_handle {
+  cursor: move;
+  cursor: -webkit-grabbing;
+}

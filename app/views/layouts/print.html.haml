@@ -1,0 +1,17 @@
+!!!
+%html
+  %head
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
+
+    = display_meta_tags site: 'HireClub', reverse: true, og: { title: :title}, fb: {app_id: Rails.application.secrets.facebook_app_id}
+
+    = stylesheet_link_tag 'normalize', media: 'all'
+    = stylesheet_link_tag 'milligram.min', media: 'all'
+    = stylesheet_link_tag 'print', media: 'all'
+
+    %script{:src => "https://use.typekit.net/hfy6svk.js"}
+    :javascript
+      try{Typekit.load({ async: false });}catch(e){}
+      
+  %body{ class: "#{controller_name}_#{action_name}"}
+    = yield

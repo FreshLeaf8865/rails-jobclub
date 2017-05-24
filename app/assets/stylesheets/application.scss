@@ -1,0 +1,90 @@
+// Custom bootstrap variables must be set or imported *before* bootstrap.
+
+$font-family-sans-serif: "proxima-nova","Avenir Next","Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+$brand-primary:         #6070E9;
+$brand-success:         #61E786;
+$brand-info:            #2EC0F9;
+$brand-warning:         #F0AD4E;
+$brand-danger:          #F2545B;
+
+$gray-light: #8E9AAF;
+
+$alert-success-bg:      $brand-success;
+$alert-success-text:    #FFF !default;
+
+$link-hover-decoration: none !default;
+$input-color-placeholder: #bbb;
+
+$btn-font-weight:                600 !default;
+
+$navbar-inverse-color: #FFF;
+
+$badge-padding-x: .6rem;
+$badge-padding-y: .4rem;
+
+
+
+@import "bootstrap";
+@import "bootstrap_overrides";
+@import "typography";
+@import "pages";
+@import "users";
+@import "projects";
+@import "typeahead";
+@import "formValidation.min";
+@import "selectize";
+@import "selectize.default";
+@import "conversation";
+@import "jquery.atwho";
+
+.facebook_blue {
+  color: #4e7ad9
+}
+.btn_facebook {
+  background: #4e7ad9;
+  border: #4e7ad9;
+}
+
+.btn_linkedin {
+  background: #1178b3;
+  border: #1178b3;
+}
+
+.btn_google {
+  background: #ea4335;
+  border: #ea4335;
+}
+
+#nav_search {
+  border: none;
+  border-radius: 99px;
+  background-image: asset-url("icons/search.svg");
+  padding-right: 2.25rem;
+  background-repeat: no-repeat;
+  background-position: center right .5625rem;
+  -webkit-background-size: 1.125rem 1.125rem;
+  background-size: 1.125rem 1.125rem;
+  font-family: $font-family-sans-serif;
+}
+.like_comment {
+  display: inline;
+}
+.sub_nav {
+  background: #DAE3E5;
+}
+.sub_nav .nav-pills > li {
+  margin-right: 2px;
+}
+.sub_nav .nav-pills > li > a {
+  color: #8e98ab;
+  font-weight: 600;
+  font-size: .9rem;
+  letter-spacing: 1px;
+}
+.sub_nav .nav-pills > li.active > a, .sub_nav .nav-pills > li.active > a:hover, .sub_nav .nav-pills > li.active > a:focus, .sub_nav .nav-pills > li > a:hover {
+  background-color: #DAE3E5;
+  border-bottom: 2px solid #04080F;
+  color: #04080F;
+  border-radius: 0;
+}

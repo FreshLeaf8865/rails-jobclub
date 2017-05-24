@@ -1,0 +1,28 @@
+.container.mt-5.mb-5
+  %h1 Milestones
+
+  / %table
+  /   %thead
+  /     %tr
+  /       %th Name
+  /       %th Start date
+  /       %th End date
+  /       %th Link
+  /       %th
+  /       %th
+  /       %th
+
+  /   %tbody
+  /     - @milestones.each do |milestone|
+  /       %tr
+  /         %td= milestone.name
+  /         %td= milestone.start_date
+  /         %td= milestone.end_date
+  /         %td= truncate(milestone.link,length: 10)
+  /         %td= link_to 'Show', milestone
+  /         %td= link_to 'Edit', edit_milestone_path(milestone)
+  /         %td= link_to 'Destroy', milestone, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+  / %br
+
+  / = link_to 'New Milestone', new_milestone_path

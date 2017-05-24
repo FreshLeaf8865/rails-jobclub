@@ -1,0 +1,43 @@
+%footer
+  .container
+    %small
+      .bold
+        %ul.list-inline
+          %li.list-inline-item
+            = link_to "Home", root_path
+          %li.list-inline-item
+            = link_to "About", about_path
+          %li.list-inline-item
+            = link_to "Contact", contact_path
+          %li.list-inline-item
+            = link_to "Privacy", privacy_path
+          %li.list-inline-item
+            = link_to "Stories", stories_path
+          %li.list-inline-item
+            = link_to "Skills", skills_path
+          %li.list-inline-item
+            = link_to "Roles", roles_path
+          %li.list-inline-item
+            = link_to "Badges", badges_path
+          %li.list-inline-item
+            = link_to "Apply", "http://facebook.com/groups/hireclub"
+          %li.list-inline-item
+            = link_to "Help", "mailto:help@hireclub.co"
+          - if user_signed_in? && current_user.is_admin
+            = link_to "Admin", rails_admin_path
+      %p
+        © 2017 kidBombay. All rights reserved.
+
+:javascript
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', "#{Rails.application.secrets.google_analytics_id}", 'auto');
+  ga('send', 'pageview');
+
+- if user_signed_in?
+  :coffeescript
+    $(document).ready ->
+      OneSignal.push(["sendTags", {user_id: "#{current_user.id}"}]);

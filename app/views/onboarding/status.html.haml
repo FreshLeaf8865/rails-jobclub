@@ -1,0 +1,92 @@
+- set_meta_tags title: "What's your status?"
+
+= render "nav"
+
+.container.mt-3.mb-5
+  .row.justify-content-center
+    .col-lg-6.col-md-8.col-sm-10
+      .progress.mb-4
+        .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "25", :role => "progressbar", :style => "width: 40%; height: 5px;"}
+
+      %h1 🌶 What's your status?
+
+      = form_for @user, url: wizard_path, method: :put do |f|
+        .form-check
+          %label.form-check-label
+            = f.check_box :is_hiring, class: 'form-check-input'
+            %i.fa.fa-bullseye.text-primary
+            Hiring
+
+        .form-check
+          %label.form-check-label
+            = f.check_box :is_available, class: 'form-check-input'
+            %i.fa.fa-briefcase.text-success
+            Available For Hire
+        .form-check
+          %label.form-check-label
+            = f.check_box :open_to_new_opportunities, class: 'form-check-input'
+            %i.fa.fa-handshake-o
+            New Opportunities
+
+        %p.form-text.text-muted 
+          Your profile will show
+          %i.fa.fa-bullseye.text-primary
+          to let people know you are hiring.
+
+          %br
+          Your profile will show
+          %i.fa.fa-briefcase.text-success
+          to let people know you are available.
+
+          %br
+          Your profile will show
+          %i.fa.fa-handshake-o
+          to let people know you are open to new opportunities.
+
+        %h2.mt-4 Open To
+        %hr
+        .form-check
+          %label.form-check-label
+            = f.check_box :open_to_remote, class: 'form-check-input'
+            %i.fa.fa-plane
+            Remote
+
+        .form-check
+          %label.form-check-label
+            = f.check_box :open_to_relocation, class: 'form-check-input'
+            Relocation
+            
+        .form-check
+          %label.form-check-label
+            = f.check_box :open_to_full_time, class: 'form-check-input'
+            Full Time
+        .form-check
+          %label.form-check-label
+            = f.check_box :open_to_part_time, class: 'form-check-input'
+            Part Time
+        .form-check
+          %label.form-check-label
+            = f.check_box :open_to_contract, class: 'form-check-input'
+            Contract
+        .form-check
+          %label.form-check-label
+            = f.check_box :open_to_internship, class: 'form-check-input'
+            Internship
+
+        %h2.mt-4 Work Authorization
+        %hr
+        .form-check 
+          %label.form-check-label
+            = f.check_box :is_us_work_authorized, class: 'form-check-input'
+            Legally authorized to work in the United States?
+          %label.form-check-label
+            = f.check_box :requires_us_visa_sponsorship, class: 'form-check-input'
+            Do you require sponsorship for a US employment visa (e.g. H-1B)?
+
+        %hr
+        %small.form-text.text-muted 
+          You can change any of these settings later.
+        %p
+
+        = f.submit "Next", class: "btn btn-primary btn-lg btn-block"
+

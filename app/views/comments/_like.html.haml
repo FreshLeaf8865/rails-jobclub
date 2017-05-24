@@ -1,0 +1,13 @@
+.like_comment{class: "like_comment_#{likeable.id}"}
+  - if user_signed_in?
+    ·
+    - if likeable.liked_by?(current_user)  
+      = link_to "Unlike", unlike_comment_path(likeable), remote: true
+    - else
+      = link_to "Like", like_comment_path(likeable), remote: true
+      
+  - if likeable.likes_count > 0
+    ·
+    %i.fa.fa-thumbs-up
+    = likeable.likes_count
+  

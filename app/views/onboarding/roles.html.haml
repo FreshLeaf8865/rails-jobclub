@@ -1,0 +1,28 @@
+- set_meta_tags title: "What's your role?"
+
+= render "nav"
+
+.container.mt-3.mb-5
+  .row.justify-content-center
+    .col-lg-6.col-md-8.col-sm-10
+      .progress.mb-4
+        .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "25", :role => "progressbar", :style => "width: 60%; height: 5px;"}
+
+      %h1 🎩 What's your role?
+
+      = form_for @user, url: wizard_path, method: :put do |f|
+        = f.fields_for :user_roles do |user_role_form|
+          .form-group
+            = user_role_form.collection_select(:role_id, Role.alphabetical, :id, :name, {}, {class: "form-control form-control-lg"})
+            %small.form-text.text-muted 
+              You can add more roles later.
+
+        .form-group
+          = f.label :company
+          = f.text_field :company, class: "form-control autocomplete_company", value: @user.company.try(:name), placeholder: "Acme Inc", autocomplete: "off"
+          = f.hidden_field :company_id, value: @user.company_id, class: "autocomplete_company_id"
+          %small.form-text.text-muted 
+            Where do you currently work?
+
+        = f.submit "Next", class: "btn btn-primary btn-lg btn-block"
+

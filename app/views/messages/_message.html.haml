@@ -1,0 +1,4 @@
+.message{class: ("my_message" if message.user_id == current_user.try(:id))}
+  .message_bubble
+    = Rinku.auto_link(message.text, :all, 'target="_blank"').html_safe
+

@@ -1,0 +1,26 @@
+.container.mt-5.mb-5
+  %h1
+    = title @title
+    %small
+      = link_to 'Add Project', new_project_path, class: "btn btn-primary btn-sm" if policy(Project).new?
+  .dropdown
+    %button#dropdownMenuButton.btn.btn-secondary.btn-sm.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+      - if params[:sort_by]
+        = params[:sort_by].titlecase
+      - else
+        Recent
+    .dropdown-menu{"aria-labelledby" => "dropdownMenuButton"}
+      %a.dropdown-item{href: projects_path } Recent
+      %a.dropdown-item{href: projects_path(sort_by: "popular")} Popular
+      %a.dropdown-item{href: projects_path(sort_by: "oldest")} Oldest
+  %p
+    %small
+      = pluralize(Project.with_image.count, "project")
+      
+  .infinite-projects
+    .row.projects
+      = render @projects
+    .row
+      .col-sm-12
+        %p.pagination
+          = link_to_next_page(@projects, 'Next Page', :remote => true, params: params.permit(:page, :sort_by))

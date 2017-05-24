@@ -1,0 +1,61 @@
+= form_for @project do |f|
+  - if @project.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@project.errors.count, "error")} prohibited this project from being saved:"
+      %ul
+        - @project.errors.full_messages.each do |msg|
+          %li= msg
+  .row
+    .col-6
+      .form-group
+        = f.label 'Image Upload'
+        %br
+        = image_tag(model_image(@project.image, 800, 600, true), width: 300)
+        = f.file_field :image, class: 'form-control-file mt-2'
+        = f.hidden_field :retained_image
+        
+        %small.form-text.text-muted
+          800x600 minimum. JPG, PNG, or GIF.
+        %small.form-text.text-muted
+          10MB maximum file size.
+      .form-group
+        = f.label "Or Paste URL to Image"
+        = f.text_field :image_url, placeholder: "http://hireclub.co/logo.jpg", class: 'form-control'      
+      
+    .col-6
+      .form-group
+        = f.label :name
+        = f.text_field :name, class: 'form-control'
+      .form-group
+        = f.label "Link To"
+        = f.text_field :link, class: 'form-control', placeholder: "http://"
+      .form-group
+        = f.label "Skills"
+        = f.text_field :skills_list, placeholder: "Design, Rails, Marketing"
+
+      .form-group
+        = f.label :company
+        = f.text_field :company, class: "form-control autocomplete_company", value: @project.company.try(:name), placeholder: "HireClub", autocomplete: "off"
+        = f.hidden_field :company_id, value: @project.company_id, class: "autocomplete_company_id"
+
+      .form-group
+        = f.label :position
+        = f.number_field :position, class: 'form-control', min: 0
+
+      .form-group
+        = f.label :description
+        = f.text_area :description, class: 'form-control', placeholder: "Describe the project...", rows: 4
+
+    
+    
+
+      %hr
+      = f.submit 'Save', class: "btn btn-primary btn-lg"
+      = link_to "Cancel", current_user, class: "btn btn-link btn-lg"
+
+- content_for :head do
+  %link{:href => "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css", :rel => "stylesheet"}/
+  %script{:src => "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"}
+
+:javascript
+  var simplemde = new SimpleMDE({ element: document.getElementById("project_description") });

@@ -1,0 +1,20 @@
+= form_for @review_request do |f|
+  - if @review_request.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@review_request.errors.count, "error")} prohibited this review_request from being saved:"
+      %ul
+        - @review_request.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    = f.label :goal
+    = f.text_area :goal, class: "form-control", placeholder: "What is your current goal?", rows: 5
+    %small.form-text.text-muted
+      What kind of feedback are you looking for?
+      %br
+      Add any links to jobs you are interested in.
+      %br
+      The more we know, the better review we can provide.
+  
+  = f.submit 'Submit', class: "btn btn-primary"
+  = link_to 'No Thanks', current_user, class: "btn btn-link"

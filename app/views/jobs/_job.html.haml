@@ -1,0 +1,16 @@
+= cache [job] do
+  .media
+    = link_to image_tag(model_avatar(job.company.avatar, 200, true), width: 52, class: 'd-flex mr-3 rounded'), job
+    .media-body
+      %h5.mt-0.mb-1
+        = link_to job.name, job
+      %small
+        = link_to image_tag(model_avatar(job.user.avatar, 200, true), width: 24, class: 'pull-left mr-1 rounded-circle'), job.user
+        = link_to job.user.display_name, job.user
+        = "· #{job.role.name}" if job.role
+        ·
+        = job.location.display_name
+        ·
+        = local_relative_time(job.created_at, type: 'time-or-date')
+        
+  %hr

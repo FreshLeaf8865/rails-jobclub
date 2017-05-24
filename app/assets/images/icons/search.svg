@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>search_icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5">
+        <g id="Nav-Bar" transform="translate(-108.000000, -17.000000)">
+            <g id="Group-3" transform="translate(100.000000, 11.000000)">
+                <g id="search_icon" transform="translate(16.131728, 14.000000) rotate(45.000000) translate(-16.131728, -14.000000) translate(8.631728, 10.000000)">
+                    <rect id="Rectangle-4" fill="#9B9AAC" x="7" y="3" width="8" height="2" rx="1"></rect>
+                    <circle id="Oval-2" stroke="#9B9AAC" stroke-width="2" fill="#FFFFFF" cx="4" cy="4" r="4"></circle>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

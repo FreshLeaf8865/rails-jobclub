@@ -1,0 +1,28 @@
+.alert {
+  margin-bottom: 0;
+  border-radius: 0;
+  border: none;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 15px;
+  color: $brand-primary;
+  letter-spacing: 0.5px;
+}
+.navbar-inverse .navbar-nav .nav-link {  
+  letter-spacing: 1px;
+  font-size: 15px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.badge-pill {
+  border-radius: 10rem;
+  letter-spacing: .02rem;
+  padding: 0.3rem 0.64rem;
+  font-weight: 600;
+  a {
+    color: #fff;
+  }
+}

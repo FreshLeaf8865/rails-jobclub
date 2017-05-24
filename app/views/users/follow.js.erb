@@ -1,0 +1,5 @@
+var button = $('.user_follow_btn_<%= @user.id %>');
+button.replaceWith("<%=j link_to_follow_user(@user, current_user) %>");
+
+var count = $('.user_followers_count')
+count.text("<%= pluralize(@user.followers.count, 'Follower') %>")

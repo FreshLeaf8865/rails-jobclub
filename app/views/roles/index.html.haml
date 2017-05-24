@@ -1,0 +1,33 @@
+.container.mt-5.mb-5
+  %h1 
+    = title "Roles"
+    %small
+      = link_to 'New', new_role_path, class: "btn btn-primary btn-sm" if policy(Role).new?
+  
+  .dropdown
+    %button#dropdownMenuButton.btn.btn-secondary.btn-sm.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+      - if params[:sort_by]
+        = params[:sort_by].titlecase
+      - else
+        Recent
+    .dropdown-menu{"aria-labelledby" => "dropdownMenuButton"}
+      %a.dropdown-item{href: roles_path } Recent
+      %a.dropdown-item{href: roles_path(sort_by: "popular")} Popular
+      %a.dropdown-item{href: roles_path(sort_by: "alphabetical")} Alphabetical
+
+  %p
+    %small
+      = pluralize(Role.all.count, "role")
+
+  - @roles.each do |role|
+    %h5
+      = link_to role.name, role
+      - if role.parent
+        %small
+          = link_to role.parent.name, role.parent
+
+  = paginate @roles
+
+
+
+  

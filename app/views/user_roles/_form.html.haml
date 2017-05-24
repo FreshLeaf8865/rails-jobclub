@@ -1,0 +1,29 @@
+= form_for @user_role do |f|
+  - if @user_role.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@user_role.errors.count, "error")} prohibited this user_role from being saved:"
+      %ul
+        - @user_role.errors.full_messages.each do |msg|
+          %li= msg
+
+  %p.lead
+    Roles are what you do. You should have 2-3 at the most.
+    - if current_user.roles.count >= 3
+      .text-warning
+        Hey there jack of all trades, you already have
+        = pluralize(current_user.roles.count, "role") + "!"
+
+  .row
+    - if !@user_role.persisted?
+      .col-6
+        .form-group
+          = f.label :role
+          = f.collection_select(:role_id, current_user.available_roles.alphabetical, :id, :name, {}, {class: "form-control"})
+    .col-6
+      .form-group
+        = f.label :position
+        = f.number_field :position, class: "form-control"
+
+  .actions
+    = f.submit 'Save', class: "btn btn-primary"
+    = link_to "Cancel", current_user, class: "btn btn-link"

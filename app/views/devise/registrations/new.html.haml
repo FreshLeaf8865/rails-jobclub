@@ -1,0 +1,40 @@
+- set_meta_tags title: "Sign Up"
+.container.mt-5.mb-5
+  .row
+    .col-sm-6.offset-sm-3.col-lg-4.offset-lg-4
+      / %h2 Sign Up
+
+      = link_to user_facebook_omniauth_authorize_path, class: "btn btn-primary btn-lg btn-block btn_facebook" do
+        %i.fa.fa-facebook-square{"aria-hidden" => "true"}
+        Sign Up with Facebook
+
+      = link_to user_google_oauth2_omniauth_authorize_path, class: "btn btn-primary btn-lg btn-block btn_google" do
+        %i.fa.fa-google{"aria-hidden" => "true"}
+        Sign Up with Google
+
+      .text-center.mt-3
+        OR
+
+      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        .form-group
+          = f.label :name
+          = f.text_field :name, class: 'form-control', placeholder: "Jane Doe"
+        .form-group{class: ('has-danger' if resource.errors.any? && resource.errors[:email].present?)}
+          = f.label :email, class: 'form-control-label'
+          = f.email_field :email, class: 'form-control'
+          .form-control-feedback
+            - if resource.errors.any? && resource.errors[:email].present?
+              = resource.errors[:email][0]
+        .form-group{class: ('has-danger' if resource.errors.any? && resource.errors[:password].present?)}
+          = f.label :password, class: 'form-control-label'
+          = f.password_field :password, autocomplete: "off", class: 'form-control'
+          .form-control-feedback
+            - if resource.errors.any? && resource.errors[:password].present?
+              = resource.errors[:password][0]
+          - if @minimum_password_length
+            %small.form-text.text-muted 
+              = @minimum_password_length
+              characters minimum.
+        
+        = f.submit "Sign Up", class: "btn btn-primary btn-block"
+      = render "devise/shared/links"

@@ -1,0 +1,22 @@
+.row.user_milestone.mb-2
+  .col-sm-4.col-md-3.col-lg-2
+    = milestone.start_date.strftime("%b %Y")
+  .col-sm-8.col-md-9.col-lg-10
+    
+    = link_to truncate(milestone.name, length: 140), milestone
+
+    - if policy(milestone).edit?
+      = link_to edit_milestone_path(milestone), class: "edit_user_milestones ml-1 mr-1 display_none text-muted hover_primary " do
+        %i.fa.fa-pencil
+    - if policy(milestone).destroy?
+      = link_to milestone_path(milestone), method: :delete, data: { confirm: "Remove this milestone?" }, remote: true, class: "delete_user_milestones display_none text-muted hover_danger" do
+        %i.fa.fa-trash-o
+    - if milestone.description.present? || milestone.skills.any?
+      %p.milestone_description.display_none
+        - if milestone.skills.any?
+          - milestone.skills.each do |skill|
+            %span.badge.badge-pill.badge-info
+              = skill
+          %br
+        %small
+          = milestone.description

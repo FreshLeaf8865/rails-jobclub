@@ -1,0 +1,11 @@
+// Append new data
+$("<%=j render(@projects) %>")
+  .appendTo($(".projects"));
+
+// Update pagination link
+<% if @projects.last_page? %>
+  $('.pagination').html("That's all, folks!");
+<% else %>
+  $('.pagination')
+    .html("<%=j link_to_next_page(@projects, 'Next Page', :remote => true, params: params.permit(:page, :sort_by)) %>");
+<% end %>

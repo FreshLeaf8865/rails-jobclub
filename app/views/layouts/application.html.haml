@@ -1,0 +1,13 @@
+!!!
+%html
+  = render 'layouts/head'
+  %body{ class: "#{controller_name}_#{action_name}"}
+    %header
+      = render 'layouts/navigation'
+    %main{:role => "main"}
+      = render 'layouts/messages'
+      = yield
+
+    = render 'layouts/footer'
+
+    = javascript_include_tag 'application'

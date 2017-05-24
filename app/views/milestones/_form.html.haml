@@ -1,0 +1,81 @@
+= form_for @milestone do |f|
+  - if @milestone.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@milestone.errors.count, "error")} prohibited this milestone from being saved:"
+      %ul
+        - @milestone.errors.full_messages.each do |msg|
+          %li= msg
+
+  .row
+    .col-sm-6
+      %p.lead
+        Milestones are the remarkable things you accomplished in your work life.
+
+      .form-group
+        = f.label :milestone
+        = f.text_field :name, class: "form-control", placeholder: "Founded HireClub with 25 of my friends",maxlength: 140
+        %small.form-text.text-muted 
+          Make them short, objective and interesting.
+
+      .form-group
+        = f.label :company
+        = f.text_field :company, class: "form-control autocomplete_company", value: @milestone.company.try(:name), placeholder: "HireClub", autocomplete: "off"
+
+        %small.form-text.text-muted 
+          Which Company, School or Organization was this milestone for?
+        = f.hidden_field :company_id, value: @milestone.company_id, class: "autocomplete_company_id"
+      .form-group
+        = f.label "When did this happen?"
+        %br
+        = f.date_select :start_date, {end_year: Date.today.year + 1, start_year: Date.today.year - 30, discard_day: true, order: [:month,:year]}
+      
+      .form-group
+        = f.label "Skills"
+        = f.text_field :skills_list, class: 'form-control', placeholder: "Design, Rails, Marketing"
+
+      .form-group
+        = f.label :link
+        = f.text_field :link, class: "form-control"
+        %small.text-muted
+          Optional - Where should the milestone link to?
+
+      .form-group
+        = f.label :description
+        = f.text_area :description, class: 'form-control', placeholder: "HireClub started with 25 friends. Now it's 9000+ people.", rows: 2
+        %small.text-muted
+          Optional short description to provide more details.
+
+      .form-group
+        = f.label :type
+        = f.select :kind, Milestone::KINDS, {}, {class: 'form-control'}
+
+      .form-check
+        %label.form-check-label
+          = f.check_box :printable, class: 'form-check-input'
+          Printable
+      %small.text-muted
+        Show this milestone in 
+        = link_to "Print Profile", print_user_path(current_user), target: "_blank"
+       
+
+    .col-sm-5.offset-sm-1.hidden-xs-down
+      %h6 Examples
+      %p
+        Joined Acme Inc as Senior Road Runner Chaser
+      %p
+        Increased Sales by 75% at Google Adwords
+      %p
+        Learned Python at HackReactor
+      %p
+        Graduated from Harvard with a degree in Computer Science
+      %h6.mt-5 Tips
+      %p
+        Add new milestones at least once a month.
+      %p
+        Milestones should be the things you are proud of.
+      %p
+        = link_to "Check out a sample profile", "http://hireclub.co/kidbombay", target: "_blank"
+
+  %hr
+  = f.submit 'Save', class: "btn btn-primary btn-lg"
+  = link_to "Cancel", current_user, class: "btn btn-link btn-lg"

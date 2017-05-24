@@ -1,0 +1,16 @@
+- commentable.comments.by_oldest.each do |comment|
+  .media.mb-4
+    = link_to image_tag(model_avatar(comment.user.avatar, 200, true), width: 52, class: 'd-flex mr-3 rounded-circle'), comment.user
+    .media-body
+      %h5.mt-0
+        = link_to comment.user.display_name, comment.user
+      %p.mb-0
+        = mentioned_users(comment.text)
+      
+      %small.text-muted
+        = local_time_ago(comment.created_at)
+        = render partial: "/comments/like", locals: { likeable: comment }      
+        - if policy(comment).destroy?
+          ·
+          = link_to "Delete", comment_path(comment), method: :delete, data: { confirm: "Delete this comment?" }, class: "text-muted"
+    

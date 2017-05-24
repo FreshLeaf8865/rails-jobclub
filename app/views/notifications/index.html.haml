@@ -1,0 +1,8 @@
+.container.mt-5.mb-5
+  %h1= title "Notifications"
+  .row
+    .col-md-8.col-lg-6
+      %ul.list-group
+        = render @notifications
+
+  = paginate @notifications

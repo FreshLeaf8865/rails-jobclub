@@ -1,0 +1,17 @@
+= form_for @resume do |f|
+  - if @resume.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@resume.errors.count, "error")} prohibited this resume from being saved:"
+      %ul
+        - @resume.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    = f.file_field :file, class: 'form-control-file mt-2'
+    = f.hidden_field :retained_file
+  .form-group
+    = f.label "Or Paste URL"
+    = f.text_field :file_url, placeholder: "http://hireclub.co/resume.pdf", class: 'form-control'      
+
+  
+  = f.submit 'Save', class: "btn btn-primary"

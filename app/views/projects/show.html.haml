@@ -1,0 +1,63 @@
+- set_meta_tags title: "#{@project.try(:name)} By #{@project.user.display_name}"
+- set_meta_tags keywords: "#{@project.key_words}"
+- set_meta_tags og: {type: "article", image: model_image(@project.image, 800, 600, true)}
+
+
+.container.mt-5.mb-5
+  .row
+    .col-sm-8
+      = image_tag(model_image(@project.image, 800, 600, true), alt: @project.name, class: "img-fluid")
+      %hr
+      = render partial: "comments/comments", locals: {commentable: @project}
+      = render partial: "comments/form", locals: {commentable: @project}
+    .col-sm-4
+      %h1
+        = @project.name
+      %hr
+      .media.mb-4
+        = link_to image_tag(model_avatar(@project.user.avatar, 200, true), width: 50, class: "d-flex align-self-center mr-3 rounded-circle"), @project.user
+        .media-body
+          = link_to @project.user.display_name, @project.user
+          %br
+          = local_time(@project.created_at)
+      %hr
+      = render partial: "/likes/like_button", locals: { likeable: @project }
+      %hr
+
+      - if @project.skills_list.present?
+        %h6 Skills
+        %p
+          - @project.skills.each do |skill|
+            %span.badge.badge-pill.badge-info
+              = link_to skill, projects_path(username: @project.user.username, skill: skill)
+          
+
+      - if @project.company
+        %h6 Company
+        %p
+          = link_to @project.company.name, @project.company
+
+      - if @project.description.present?
+        %h6 Description
+        %p
+          = markdown(@project.description)
+
+      - if @project.link.present?
+        %h6 Link
+        %p
+          = link_to link_host(@project.link), @project.link, target: "_blank"
+
+      - if policy(@project).edit?
+        %hr
+        = link_to edit_project_path(@project), class: "btn btn-primary btn-sm" do
+          %i.fa.fa-pencil.mr-1
+          Edit
+        - if is_admin? 
+          = link_to "Admin", rails_admin.edit_path(model_name: 'project', id: @project.id), class: "btn btn-danger btn-sm ml-2"
+      %hr
+      - previous_project = @project.previous_project
+      - if previous_project
+        = link_to "Previous", project_path(previous_project), id: "previous_project"
+      - next_project = @project.next_project
+      - if next_project
+        = link_to "Next", project_path(next_project), id: "next_project", class: 'pull-right'

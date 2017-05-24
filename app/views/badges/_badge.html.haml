@@ -1,0 +1,14 @@
+= cache [badge] do
+  .media
+    = link_to image_tag(model_image(badge.avatar, 200, 200, true), width: 52, class: 'd-flex mr-3 rounded'), badge
+    .media-body
+      %h5.mt-0.mb-0
+        = link_to badge.name, badge
+      
+      = badge.description
+      %p.mb-0
+        %small
+          Earned by
+          = badge.earned_by
+
+  %hr

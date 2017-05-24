@@ -1,0 +1,22 @@
+.container.mt-5.mb-5
+  %h1 Your Skills
+
+  %table.table
+    %thead
+      %tr
+        %th Skill
+        %th Years
+        %th
+        %th
+
+    %tbody
+      - @user_skills.each do |user_skill|
+        %tr
+          %td= user_skill.skill.name
+          %td= user_skill.years
+          %td= link_to 'Edit', edit_user_skill_path(user_skill)
+          %td= link_to 'Destroy', user_skill, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+  %br
+
+  = link_to 'New User skill', new_user_skill_path

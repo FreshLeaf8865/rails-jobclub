@@ -1,0 +1,30 @@
+= form_for @user_skill do |f|
+  - if @user_skill.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@user_skill.errors.count, "error")} prohibited this user_skill from being saved:"
+      %ul
+        - @user_skill.errors.full_messages.each do |msg|
+          %li= msg
+
+  
+  .row
+    - unless @user_skill.persisted?
+      .col-6
+        .form-group
+          = f.label :skill
+          = f.text_field :skill, class: "form-control", value: @user_skill.skill.try(:name), placeholder: "Design", autocomplete: "off"
+          = f.hidden_field :skill_id, value: @user_skill.skill_id
+          
+    .col-6
+      .form-group
+        = f.label :years
+        = f.number_field :years, class: "form-control", min: 0, max: 50
+
+    / .col-6
+    /   .form-group
+    /     = f.label :position
+    /     = f.number_field :position, class: "form-control"
+
+  .actions
+    = f.submit 'Save', class: "btn btn-primary"
+    = link_to "Cancel", current_user, class: "btn btn-link"

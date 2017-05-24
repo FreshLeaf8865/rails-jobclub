@@ -1,0 +1,58 @@
+.container.mt-5.mb-5
+  %h1 
+    = title "Stories"
+    %small
+      = link_to 'Write Story', new_story_path, class: "btn btn-primary btn-sm" if policy(Story).new?
+  .dropdown
+    %button#dropdownMenuButton.btn.btn-secondary.btn-sm.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+      - if params[:sort_by]
+        = params[:sort_by].titlecase
+      - else
+        Recent
+    .dropdown-menu{"aria-labelledby" => "dropdownMenuButton"}
+      %a.dropdown-item{href: stories_path } Recent
+      %a.dropdown-item{href: stories_path(sort_by: "popular")} Popular
+      %a.dropdown-item{href: stories_path(sort_by: "oldest")} Oldest
+  %p
+    %small
+      = pluralize(Story.published.count, "story")
+      - if user_signed_in?
+        ·
+        = link_to pluralize(current_user.stories.drafts.count, "Draft"), drafts_stories_path
+
+  .stories.mt-4
+    = render @stories
+
+  = paginate @stories
+
+/ %h1 Listing stories
+
+/ %table
+/   %thead
+/     %tr
+/       %th User
+/       %th Name
+/       %th Slug
+/       %th Cover uid
+/       %th Published on
+/       %th Content
+/       %th
+/       %th
+/       %th
+
+/   %tbody
+/     - @stories.each do |story|
+/       %tr
+/         %td= story.user
+/         %td= story.name
+/         %td= story.slug
+/         %td= story.cover_uid
+/         %td= story.published_on
+/         %td= story.content
+/         %td= link_to 'Show', story
+/         %td= link_to 'Edit', edit_story_path(story)
+/         %td= link_to 'Destroy', story, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+/ %br
+
+/ = link_to 'New Story', new_story_path

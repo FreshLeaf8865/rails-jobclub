@@ -1,0 +1,2 @@
+- user_badge = activity.trackable
+= render partial: "/notifications/item", locals: {activity: activity, verb: "earned badge", object: user_badge.badge.name, link: url_for(user_badge.badge)}

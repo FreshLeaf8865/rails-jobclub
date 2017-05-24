@@ -1,0 +1,19 @@
+.container.mt-5.mb-5
+  %h1
+    = title "Your Resumes"
+    %small
+      = link_to 'Upload Resume', new_resume_path, class: "btn btn-primary btn-sm"
+
+  %table.table
+    %thead
+      %tr
+        %th Name
+        %th Uploaded
+        %th
+
+    %tbody
+      - @resumes.each do |resume|
+        %tr
+          %td= link_to resume.file_name, resume
+          %td= resume.created_at.strftime("%D %r")
+          %td= link_to 'Delete', resume, :method => :delete, :data => { :confirm => 'Are you sure?' }

@@ -1,0 +1,9 @@
+- user = activity.owner
+- user_badge = activity.trackable
+.media.mb-2
+  = render partial: "/public_activity/user_avatar", locals: {user: user}
+  .media-body
+    = link_to user.display_name, user
+    earned badge
+    = link_to user_badge.name, user_badge.badge
+    = render partial: "/public_activity/time_ago", locals: {activity: activity}

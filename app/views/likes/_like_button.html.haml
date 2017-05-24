@@ -1,0 +1,17 @@
+.like_button{class: "like_button_#{likeable.class.name.downcase}_#{likeable.id}"}
+  - if !user_signed_in?
+    = link_to omniauth_authorize_path(User, 'facebook'), class: "btn btn-secondary btn-sm" do
+      %i.fa.mr-1{"aria-hidden" => "true", class: likeable_icon(likeable)}
+      = pluralize(likeable.likes_count, "Like")
+  - else
+    - if likeable.liked_by?(current_user)
+      = link_to likeable.like_for(current_user), remote: true, class: "btn btn-danger btn-sm", :method => :delete do
+        %i.fa.mr-1{"aria-hidden" => "true", class: likeable_icon(likeable)}
+        = pluralize(likeable.likes_count, "Like")
+    - else
+      = form_for Like.new(user: current_user), remote: true, html: {id: "like_#{likeable.class.name.downcase}_#{likeable.id}" } do |f|
+        = f.hidden_field :likeable_id, value: likeable.id
+        = f.hidden_field :likeable_type, value: likeable.class.name
+        = button_tag class: "btn btn-secondary btn-sm" do
+          %i.fa.mr-1{"aria-hidden" => "true", class: likeable_icon(likeable)}
+          = pluralize(likeable.likes_count, "Like")

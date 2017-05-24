@@ -1,0 +1,9 @@
+%p
+  Hi #{@user.first_name},
+%p
+  Your
+  = link_to "profile review", review_request_url(@review_request)
+  has started.
+  
+%p
+  We'll email your review when we are done. Sit tight, it can take up to a week right now.

@@ -1,0 +1,24 @@
+// Place all the styles related to the Pages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+footer {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
+  background: rgb(234, 237, 243);
+}
+
+.home_banner {
+  background: asset-url("home_bg.jpg");
+  background-size: cover;
+  background-position: center center;
+  border-radius: 0;
+  h1, h2, .lead {
+    color: white
+  }
+}
+
+hr.inverse {
+  border-top: 5px solid rgb(255,255,255);
+  opacity: .4;
+}

@@ -1,0 +1,11 @@
+// Append new data
+$("<%=j render_activities(@activities, locals: { active_user: current_user}, layout: :activity) %>")
+  .appendTo($(".activities"));
+
+// Update pagination link
+<% if @activities.last_page? %>
+  $('.pagination').html("That's all, folks!");
+<% else %>
+  $('.pagination')
+    .html("<%=j link_to_next_page(@activities, 'Next Page', :remote => true) %>");
+<% end %>

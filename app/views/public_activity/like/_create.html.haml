@@ -1,0 +1,47 @@
+- user = activity.owner
+- like = activity.trackable
+- likeable = like.likeable
+
+= render partial: "/public_activity/header", locals: {activity: activity, text: "liked a #{likeable.feed_display_class}"}
+
+- if like.likeable_type == "Project"
+  = link_to project_path(likeable) do
+    %img{:alt => likeable.name, :src => model_image(likeable.image, 800, 600, true), width: "100%",data: {toggle:"tooltip", placement: "bottom"}, title: truncate(likeable.description, length: 160) }
+
+  .card-title.mt-2
+    - if likeable.name.present?
+      = link_to likeable.name, likeable
+    by
+    = link_to likeable.user do
+      = image_tag(model_avatar(likeable.user.avatar, 200, true), width: 26, class: ' rounded-circle')
+      = likeable.user.display_name
+    
+
+  %p.card-text
+    = render partial: "/likes/like_button", locals: { likeable: likeable }
+- elsif like.likeable_type == "Story"
+  - story = likeable
+  %h4.card-title
+    = link_to story.name, story
+  = link_to story do
+    = image_tag model_image(story.cover, 1920, 1080, true), class: "card-img", width: "100%"
+  %p.card-text
+    = markdown(truncate(story.content, length: 120))
+    %small
+      = link_to "Read more...", story, class: "text-muted"
+
+  %p.card-text
+    = render partial: "/likes/like_button", locals: { likeable: story }
+
+- else
+  - if like.likeable_type == "Job"
+    = link_to like.likeable_name, likeable
+  - if like.likeable_type == "UserBadge"
+    = link_to like.likeable_name, user_path(likeable.user)
+  - if like.likeable_type == "Milestone"
+    = link_to(truncate(like.likeable_name,length:40), like.likeable)
+  - if like.likeable_type == "Story"
+    = link_to(truncate(like.likeable_name,length:40), like.likeable)
+  - if like.likeable_type == "Comment"
+    = link_to(truncate(like.likeable.commentable.name,length:40), like.likeable.commentable)
+    

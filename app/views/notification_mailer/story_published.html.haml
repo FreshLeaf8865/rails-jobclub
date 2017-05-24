@@ -1,0 +1,9 @@
+%h4
+  = link_to @story.user.display_name, @story.user
+  published a story
+%h2
+  = link_to @story.name, @story
+%p
+  = truncate(@story.content, length: 160)
+%p
+  = link_to "View Story", @story

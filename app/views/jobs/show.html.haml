@@ -1,0 +1,81 @@
+- set_meta_tags canonical: job_url(@job)
+- set_meta_tags image_src: model_image(@job.company.avatar, 200, 200, true)
+- set_meta_tags description: @job.description
+- set_meta_tags og: {type: "article", image: model_image(@job.company.avatar, 200, 200, true), url: job_url(@job), description: @job.description}
+
+.container.mt-5.mb-5
+  .row
+    .col-sm-12
+      .media
+        = link_to image_tag(company_avatar(@job.company.avatar, 200, true), width: 100, class: "d-flex mr-3 rounded"), @job.company
+        .media-body
+          %h1.black
+            = title @job.name
+          %p
+            = link_to @job.company.name, @job.company
+            
+            = "· #{@job.role.name}" if @job.role
+            ·
+            = @job.location.display_name
+            ·
+            = local_relative_time(@job.created_at, type: 'time-or-date')
+
+            %br
+            = @job.skills_list.split(",").join(" · ")
+            %br
+            - if @job.full_time
+              %span.badge.badge-pill.badge-primary
+                Full Time
+            - if @job.part_time
+              %span.badge.badge-pill.badge-default
+                Part Time
+            - if @job.contract
+              %span.badge.badge-pill.badge-info
+                Contract
+            - if @job.internship
+              %span.badge.badge-pill.badge-default
+                Internship
+            - if @job.remote
+              %span.badge.badge-pill.badge-success
+                %i.fa.fa-plane
+                Remote
+
+  .row
+    .col-sm-8
+      .media
+        = link_to image_tag(model_avatar(@job.user.avatar, 200, true), width: 52, class: 'd-flex mr-3 rounded-circle'), @job.user
+        .media-body
+          %h5.mt-0.mb-0
+            = link_to @job.user.display_name, @job.user
+            - if @job.user.is_hiring
+              %span.small
+                %i.fa.fa-bullseye.text-primary
+
+            - if @job.user.is_available
+              %small
+                %i.fa.fa-briefcase.text-success
+          %small
+            = @job.user.primary_role_name
+            - if @job.user.company
+              ·
+              = @job.user.company.name
+          
+          %hr
+          = render partial: "/likes/like_button", locals: { likeable: @job }
+          %hr
+
+          %p.mt-3
+            = markdown(@job.description)
+
+          %p
+            = link_to link_display(@job.link), @job.link, target: "_blank" if @job.link.present?
+            
+      %hr
+      = render partial: "comments/comments", locals: { commentable: @job }
+      = render partial: "comments/form", locals: { commentable: @job } 
+
+    .col-sm-3
+      = link_to 'Edit', edit_job_path(@job), class: "btn btn-primary" if policy(@job).edit?
+      = link_to 'Delete', @job, :method => :delete, :data => { :confirm => 'Are you sure you want to delete this job post?' }, class: "btn btn-danger" if policy(@job).edit?
+
+  

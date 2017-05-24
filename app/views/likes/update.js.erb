@@ -1,0 +1,2 @@
+el = $(".like_button_<%= @likeable.class.name.downcase %>_<%= @likeable.id %>")
+el.replaceWith("<%= escape_javascript(render partial: '/likes/like_button', locals: { likeable: @likeable } ) %>");

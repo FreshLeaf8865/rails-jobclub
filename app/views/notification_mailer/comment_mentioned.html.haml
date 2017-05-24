@@ -1,0 +1,7 @@
+%h4
+  #{@comment.user.display_name} mentioned you in a comment
+%h2
+  #{@comment.text}
+%p
+  on #{@comment.commentable_type.downcase}
+  = link_to @commentable.name, @commentable

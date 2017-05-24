@@ -1,0 +1,12 @@
+%a.list-group-item.list-group-item-action{href: link, data: {key: activity.key}}
+  = image_tag(model_avatar(activity.owner.avatar, 200, true), width: 48, class: "mr-3 rounded-circle")
+  %p
+    %span
+      %strong
+        = activity.owner.display_name
+      = verb
+      %strong
+        = object
+    %br
+    %small.text-muted
+      = local_time_ago(activity.created_at)

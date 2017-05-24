@@ -1,0 +1,9 @@
+- user = activity.owner
+- review_request = activity.trackable
+.media.mb-2
+  = render partial: "/public_activity/user_avatar", locals: {user: user}
+  .media-body
+    = link_to user.display_name, user
+    requested a
+    = link_to "profile review", review_request_path(review_request)
+    

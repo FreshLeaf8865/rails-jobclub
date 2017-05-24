@@ -1,0 +1,23 @@
+.container.mt-5.mb-5
+  .row
+    .col-sm-8
+      .media
+        = image_tag(model_image(@badge.avatar, 200, 200, true), width: 100, class: "d-flex mr-3 rounded")
+        .media-body
+          %h1.black
+            = title @badge.name
+          = @badge.description
+          %p
+            %small
+              Earned By
+              = @badge.earned_by
+              %br
+              = pluralize(@badge.users.count, "member")
+    .col-sm-3
+      = link_to 'Edit', edit_badge_path(@badge), class: "btn btn-primary btn-block" if policy(@badge).edit?
+  .row
+    .col-sm-12
+      = render partial: "users/user", collection: @users 
+
+      = paginate @users
+

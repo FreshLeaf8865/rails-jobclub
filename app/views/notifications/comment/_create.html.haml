@@ -1,0 +1,4 @@
+- comment = activity.trackable
+- commentable = comment.commentable
+
+= render partial: "/notifications/item", locals: {activity: activity, verb: "commented on", object: commentable.name, link: url_for(commentable)}

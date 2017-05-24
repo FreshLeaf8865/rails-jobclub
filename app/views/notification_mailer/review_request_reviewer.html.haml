@@ -1,0 +1,8 @@
+%p
+  Hi #{@user.first_name},
+%p
+  #{@owner.display_name} is asking for a profile review.
+%p
+  = link_to "View Details", review_request_url(@review_request)
+%p
+  = link_to user_url(@owner), user_url(@owner)

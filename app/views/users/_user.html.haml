@@ -1,0 +1,24 @@
+= cache [user] do
+  .media
+    = link_to image_tag(model_avatar(user.avatar, 200, true), width: 52, class: 'd-flex mr-3 rounded-circle'), user
+    .media-body
+      %h5.mt-0
+        = link_to user.display_name, user
+
+        %small
+          = render partial: "/users/icons", locals: {user: user}
+
+      %small
+        - user.user_roles.by_position.limit(3).each_with_index do |user_role, index|
+          %span.user_role
+            = link_to "#{user_role.name}", user_role.role
+            ·
+        - if user.company.present?
+          = link_to user.company.name, user.company
+          ·
+        = "#{user.location.name} · " if user.location.present?
+        = "#{display_years(user.years_experience)} Experience"
+        - if user.open_to_remote
+          ·
+          %i.fa.fa-plane.text-muted
+  %hr

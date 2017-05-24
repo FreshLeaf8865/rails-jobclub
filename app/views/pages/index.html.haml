@@ -1,0 +1,20 @@
+.jumbotron.mb-0.home_banner
+  .container
+    / %h2.black.letterspace
+    /   HireClub
+    
+    %h1.display-3
+      Help Friends Find Jobs
+    %hr.inverse
+    %p.lead.mt-5
+      HireClub is an invite only job referral network.
+    %p.mt-5
+      = link_to omniauth_authorize_path(User, 'facebook'), class: "btn btn-primary btn-lg btn_facebook" do
+        %i.fa.fa-facebook-square{"aria-hidden" => "true"}
+        Sign Up with Facebook
+    - if user_signed_in? && !current_user.has_linkedin?
+      %p
+        = link_to omniauth_authorize_path(User, 'linkedin'), class: "btn btn-primary btn-lg btn_linkedin" do
+          %i.fa.fa-linkedin-square{"aria-hidden" => "true"}
+          Add LinkedIn
+      / %a.btn.btn-info.btn-lg{:href => "http://facebook.com/groups/hireclub", :role => "button"} Apply To Join »

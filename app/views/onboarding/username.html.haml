@@ -1,0 +1,38 @@
+- set_meta_tags title: "Choose Username"
+
+= render "nav"
+
+.container.mt-3.mb-5
+  .row.justify-content-center
+    .col-lg-6.col-md-8.col-sm-10
+      .progress.mb-4
+        .progress-bar{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "25", :role => "progressbar", :style => "width: 0;height: 5px;"}
+
+      %h1 🙊 Choose Username
+
+      %p
+        Your profile in HireClub highlights your milestones, skills and projects.
+        %br
+        Relax, we'll walk you through it in the next few steps 👣.
+
+      = form_for @user, url: wizard_path, method: :put, html: {id: 'new_user'} do |f|
+        .form-group{class: ('has-danger' if @user.errors.any?)}
+          - username = @user.username.present? ? @user.username : @user.suggested_username
+          = f.text_field :username, class: 'form-control form-control-lg', placeholder: "johndoe", value: username
+          
+          .form-control-feedback
+            - if @user.errors.any? && @user.errors.details[:username].present?
+              - username = @user.errors.details[:username][0][:value]
+            %span#username_hint
+              = "hireclub.co/#{username}"
+
+            - if @user.errors.any?
+              is not available
+
+          %small.form-text.text-muted 
+            %p
+            You can use letters, dashes, underscores or dots.
+            %br
+            You can change this at any time.
+
+        = f.submit "Next", class: "btn btn-primary btn-lg btn-block"

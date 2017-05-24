@@ -1,0 +1,12 @@
+.container.mt-5.mb-5  
+  %h1
+    = title "Jobs"
+    %small
+      = link_to 'Post A Job', new_job_path, class: "btn btn-primary btn-sm" if policy(Job).new?
+  %p
+    %small
+      = pluralize(Job.all.count, "job")
+
+  = render @jobs
+
+  = paginate @jobs

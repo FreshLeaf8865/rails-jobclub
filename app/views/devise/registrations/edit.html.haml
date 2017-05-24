@@ -1,0 +1,212 @@
+.container-fluid.mt-2
+  %ul.nav.nav-tabs{:role => "tablist"}
+    %li.nav-item
+      %a.nav-link.active{"data-toggle" => "tab", :href => "#profile", :role => "tab"} Profile
+    %li.nav-item
+      %a.nav-link{"data-toggle" => "tab", :href => "#status", :role => "tab"} Status
+    / %li.nav-item
+    /   %a.nav-link{"data-toggle" => "tab", :href => "#social", :role => "tab"} Social
+    %li.nav-item
+      %a.nav-link{"data-toggle" => "tab", :href => "#account", :role => "tab"} Account
+
+.container.mt-5.mb-5
+  .row
+    .col-sm-6.offset-sm-3
+      = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
+        = devise_error_messages!
+        .tab-content
+          #profile.tab-pane.active{:role => "tabpanel"}
+            %h2 Profile
+            %hr
+
+            .form-group
+              = f.label :name, "Full Name"
+              = f.text_field :name, class: 'form-control', placeholder: "John Doe"
+
+            .form-group
+              = f.label :company
+              = f.text_field :company, class: "form-control autocomplete_company", value: @user.company.try(:name), placeholder: "Acme Inc", autocomplete: "off"
+              = f.hidden_field :company_id, value: @user.company_id, class: "autocomplete_company_id"
+
+            .form-group
+              = f.label :username, "Username"
+              = f.text_field :username, class: 'form-control', autocomplete: "off"
+              .form-control-feedback
+                - username = "username"
+                - if @user.errors.any? && @user.errors.details[:username].present?
+                  - username = @user.errors.details[:username][0][:value]
+                %small
+                  %span#username_hint
+                    = "hireclub.co/#{username}"
+
+            .form-group
+              = f.label :location
+              = f.text_field :location, class: 'form-control', value: @user.location.try(:display_name), autocomplete: "off"
+              = f.hidden_field :location_id, value: @user.location_id
+
+            .form-group
+              = f.label :bio
+              = f.text_area :bio, class: 'form-control', rows: 3, maxlength: 140
+
+            .form-group
+              = f.label 'Profile Image'
+              %br
+              = image_tag(model_image(resource.avatar, 200, 200, true), width: 100, class: 'img-circle m-b-1')
+              %br
+
+              = f.file_field :avatar
+              = f.hidden_field :retained_avatar
+              
+            .form-group
+              = f.label "Website"
+              = f.text_field :website_url, class: 'form-control', placeholder: "http://hireclub.co"
+
+            .form-group
+              = f.label "Twitter"
+              = f.text_field :twitter_url, class: 'form-control', placeholder: "http://twitter.com/username"
+
+            .form-group
+              = f.label "Dribbble"
+              = f.text_field :dribbble_url, class: 'form-control', placeholder: "http://dribbble.com/username"
+
+            .form-group
+              = f.label "Github"
+              = f.text_field :github_url, class: 'form-control', placeholder: "http://github.com/username"
+
+            .form-group
+              = f.label "Medium"
+              = f.text_field :medium_url, class: 'form-control', placeholder: "http://medium.com/@username"
+
+            .form-group
+              = f.label "Facebook"
+              = f.text_field :facebook_url, class: 'form-control', placeholder: "http://facebook.com/username"
+
+            .form-group
+              = f.label "LinkedIn"
+              = f.text_field :linkedin_url, class: 'form-control', placeholder: "http://www.linkedin.com/in/username"
+
+            .form-group
+              = f.label "Instagram"
+              = f.text_field :instagram_url, class: 'form-control', placeholder: "http://instagram.com/username"
+
+            .form-group
+              = f.label "IMDB"
+              = f.text_field :imdb_url, class: 'form-control', placeholder: "http://www.imdb.com/name/nm000000/"
+
+          #status.tab-pane{:role => "tabpanel"}
+            %h2 Status
+            %hr
+            .form-check
+              %label.form-check-label
+                = f.check_box :is_hiring, class: 'form-check-input'
+                %i.fa.fa-bullseye.text-primary
+                Hiring
+
+            .form-check
+              %label.form-check-label
+                = f.check_box :is_available, class: 'form-check-input'
+                %i.fa.fa-briefcase.text-success
+                Available To Hire
+            .form-check
+              %label.form-check-label
+                = f.check_box :open_to_new_opportunities, class: 'form-check-input'
+                %i.fa.fa-handshake-o
+                New Opportunities
+
+            %h2.mt-4 Open To
+            %hr
+            .form-check
+              %label.form-check-label
+                = f.check_box :open_to_remote, class: 'form-check-input'
+                %i.fa.fa-plane
+                Remote
+            .form-check
+              %label.form-check-label
+                = f.check_box :open_to_relocation, class: 'form-check-input'
+                Relocation
+            .form-check
+              %label.form-check-label
+                = f.check_box :open_to_full_time, class: 'form-check-input'
+                Full Time
+            .form-check
+              %label.form-check-label
+                = f.check_box :open_to_part_time, class: 'form-check-input'
+                Part Time
+            .form-check
+              %label.form-check-label
+                = f.check_box :open_to_contract, class: 'form-check-input'
+                Contract
+            .form-check
+              %label.form-check-label
+                = f.check_box :open_to_internship, class: 'form-check-input'
+                Internship
+
+            - if current_user.is_admin || current_user.is_moderator
+              .form-check
+                %label.form-check-label
+                  = f.check_box :is_reviewer, class: 'form-check-input'
+                  Reviewing Profiles
+
+            %h2.mt-4 Work Authorization
+            %hr
+            %label.form-check-label
+              = f.check_box :is_us_work_authorized, class: 'form-check-input'
+              Legally authorized to work in the United States?
+            %label.form-check-label
+              = f.check_box :requires_us_visa_sponsorship, class: 'form-check-input'
+              Do you require sponsorship for a US employment visa (e.g. H-1B)?
+
+
+          
+          
+          / #social.tab-pane{:role => "tabpanel"}
+          /   %h2 Social
+          /   %hr
+          /     - if !resource.has_facebook?
+          /       = link_to omniauth_authorize_path(User, 'facebook'), class: "btn btn-primary btn_facebook" do
+          /         %i.fa.fa-facebook-square{"aria-hidden" => "true"}
+          /         Add Facebook
+          /     - else
+          /       = link_to "", class: "btn btn-primary btn_facebook" do
+          /         %i.fa.fa-facebook-square{"aria-hidden" => "true"}
+          /         Facebook Connected
+          /     %p
+          /     - if !resource.has_linkedin?
+          /       = link_to omniauth_authorize_path(User, 'linkedin'), class: "btn btn-primary btn_linkedin" do
+          /         %i.fa.fa-linkedin-square{"aria-hidden" => "true"}
+          /         Add LinkedIn
+          /     - else
+          /       = link_to "", class: "btn btn-primary btn_linkedin" do
+          /         %i.fa.fa-linkedin-square{"aria-hidden" => "true"}
+          /         LinkedIn Connected
+
+          #account.tab-pane{:role => "tabpanel"}
+            %h2 Account
+            %hr
+
+            .form-group
+              = f.label :email
+              = f.email_field :email, class: 'form-control'
+            - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+              %div
+                Currently waiting confirmation for: #{resource.unconfirmed_email}
+            .form-group
+              = f.label :password
+              = f.password_field :password, autocomplete: "off", class: 'form-control'
+              %small.form-text.text-muted
+                Leave blank if you dont want to change it.
+                - if @minimum_password_length
+                  %br
+                  = @minimum_password_length
+                  characters minimum.
+          
+          .mt-4
+            = f.submit "Save Changes", class: "btn btn-primary btn-block"
+        / %hr
+        / %h3.m-t-3 Delete Account
+        / %p
+        /   You can delete your account and all data associated with it.
+        / %p
+        /   = link_to "Delete Account", registration_path(resource_name), :method => :delete, :data => { :confirm => 'Delete your account?' }, class: 'btn btn-danger btn-sm'
+          
+        

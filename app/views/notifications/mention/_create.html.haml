@@ -1,0 +1,5 @@
+- mention = activity.trackable
+- comment = mention.mentionable
+- commentable = comment.commentable
+
+= render partial: "/notifications/item", locals: {activity: activity, verb: "mentioned you in a comment on", object: commentable.name, link: url_for(commentable)}

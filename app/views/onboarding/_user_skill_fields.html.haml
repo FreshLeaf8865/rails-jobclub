@@ -1,0 +1,26 @@
+.nested-fields
+  .row
+    .col-7
+      .form-group
+        = f.label :skill
+        = f.text_field :skills, class: "form-control autocomplete_skill", value: f.object.skill.present? ? f.object.skill.name : '', placeholder: "Design", autocomplete: :off
+        = f.hidden_field :skill_id, class: "autocomplete_skill_id", value: f.object.skill.present? ? f.object.skill_id : ''
+
+    .col-3
+      .form-group
+        = f.label :years
+        = f.number_field :years, class: "form-control", min: 0, max: 50
+    .col-1
+      .form-group
+        %label
+          &nbsp;
+        = link_to_remove_association f, class: "btn btn-default" do
+          .text-danger
+            %i.fa.fa-trash-o
+
+
+:coffeescript
+  if(window.initilize_typehead)
+    $('.autocomplete_skill').typeahead('destroy');
+    window.initilize_typehead();
+

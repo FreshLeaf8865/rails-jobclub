@@ -1,0 +1,19 @@
+.container.mt-5.mb-5
+  / %a{:href => skills_path } « Skills
+
+  %h1
+    = title @skill.name
+    %small
+      = link_to 'Edit', edit_skill_path(@skill), class: "btn btn-primary btn-sm" if policy(@skill).edit?
+      = link_to "Admin", rails_admin.edit_path(model_name: 'skill', id: @skill.id), class: "btn btn-danger btn-sm" if current_user && current_user.is_admin
+
+  %p
+    %small
+      = pluralize(@skill.users_count, "member")
+
+  = render partial: "users/user", collection: @users 
+
+  = paginate @users
+
+
+  

@@ -1,0 +1,23 @@
+.container
+  %h1 Likes
+
+  %table.table
+    %thead
+      %tr
+        %th ID
+        %th User
+        %th Likeable
+        %th
+        %th
+
+    %tbody
+      - @likes.each do |like|
+        %tr
+          %td= like.id
+          %td= like.user.display_name
+          %td= like.likeable
+          %td= link_to 'Destroy', like, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+  %br
+
+  = link_to 'New Like', new_like_path

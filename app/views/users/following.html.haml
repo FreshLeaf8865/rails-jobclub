@@ -1,0 +1,16 @@
+- title "#{@user.display_name} Following"
+.container.mt-5.mb-5  
+  %h1
+    = link_to @user.display_name, @user
+  %p
+    %small
+    = @scope.count
+    Following
+
+  - @following.each do |follower|
+    = render(follower.followable)
+
+  = paginate @following
+
+
+  

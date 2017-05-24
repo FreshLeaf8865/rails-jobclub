@@ -1,0 +1,22 @@
+.container
+  %h1 New Like
+  = form_for @like do |f|
+    - if @like.errors.any?
+      #error_explanation
+        %h2= "#{pluralize(@like.errors.count, "error")} prohibited this like from being saved:"
+        %ul
+          - @like.errors.full_messages.each do |msg|
+            %li= msg
+
+
+    .form-group
+      = f.label :user
+      = f.collection_select(:user_id, User.alphabetical, :id, :name, {}, {class: "form-control"})
+    .form-group
+      = f.label :likeable
+      = f.collection_select(:likeable_id, Project.all, :id, :name, {}, {class: "form-control"})
+      = f.hidden_field :likeable_type, value: "Project"
+
+    .actions
+      = f.submit 'Save', class: "btn btn-primary"
+      = link_to "Cancel", likes_path, class: "btn btn-link"

@@ -1,0 +1,49 @@
+= form_for @story do |f|
+  - if @story.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@story.errors.count, "error")} prohibited this story from being saved:"
+      %ul
+        - @story.errors.full_messages.each do |msg|
+          %li= msg
+
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control', placeholder: "Headline"
+  .row
+    .col-lg-7
+      .form-group
+        = f.label :content
+        = f.text_area :content, class: 'form-control', rows: 10, placeholder: "Write here"
+    .col.lg-5
+      .form-group
+        = f.label 'Cover Image'
+        %br
+        = image_tag(model_image(@story.cover, 1920, 1080, true), class: 'img-fluid mb-2')
+        %br
+        = f.file_field :cover
+        = f.hidden_field :retained_cover
+        = f.text_field :cover_url, class: 'form-control mt-2', placeholder: "http://site.com/image.jpg"
+
+      .form-group
+        = f.label "Tags"
+        = f.text_field :tags_list, placeholder: "Design, Motivation, Interviewing"
+
+      - if current_user.is_admin
+        .form-group
+          = f.label :slug
+          = f.text_field :slug, class: 'form-control'
+
+        .form-group
+          = f.label :published_on
+          = f.text_field :published_on, class: 'form-control'
+  
+  = f.submit 'Save', class: "btn btn-primary btn-lg"
+  = link_to 'Cancel', @story, class: "btn btn-lg btn-link" if @story.persisted?
+
+
+- content_for :head do
+  %link{:href => "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css", :rel => "stylesheet"}/
+  %script{:src => "https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"}
+
+:javascript
+  var simplemde = new SimpleMDE({ element: document.getElementById("story_content") });

@@ -1,0 +1,61 @@
+%nav.navbar.navbar-inverse.bg-primary.navbar-toggleable-md
+  %button.navbar-toggler.navbar-toggler-right{"aria-controls" => "navbarSupportedContent", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#navbarSupportedContent", "data-toggle" => "collapse", :type => "button"}
+    %span.navbar-toggler-icon
+
+  %a.navbar-brand{:href => root_path}
+    = image_tag("logo_white.svg", width: 30, height: 30, alt: "HireClub Logo", class: "mr-1")
+    HireClub
+
+  #navbarSupportedContent.collapse.navbar-collapse
+    = form_tag search_path, :method => 'get', class: 'form-inline my-2 my-lg-0' do
+      = text_field_tag :q, params[:q], {placeholder: "Search", class: "form-control mr-sm-2", type: "search", id: "nav_search"}
+
+    %ul.nav.navbar-nav.mr-auto
+      %li.nav-item
+        %a.nav-link{:href => jobs_path} Jobs
+      %li.nav-item
+        %a.nav-link{:href => projects_path} Projects
+      %li.nav-item
+        %a.nav-link{:href => stories_path} Stories
+      %li.nav-item
+        %a.nav-link{:href => members_path} Members
+      %li.nav-item
+        %a.nav-link{:href => companies_path} Companies
+
+    %ul.nav.navbar-nav
+      - if !user_signed_in?
+        %li.nav-item
+          %a.nav-link{:href => new_user_registration_path} Sign Up
+        %li.nav-item
+          %a.nav-link{:href => new_user_session_path} Login
+      - else
+        - if policy(Conversation).create?
+          %li.nav-item
+            %a.nav-link{:href => conversations_path}
+              %i.fa.fa-comment-o{"aria-hidden" => "true"}
+              - unread_messages_count = current_user.conversation_users.sum(:unread_messages_count)
+              -if unread_messages_count > 0
+                = unread_messages_count
+        %li.nav-item
+          %a.nav-link.mr-3{:href => notifications_path}
+            - if current_user.display_notifications.unread.exists?
+              %i.fa.fa-bell{"aria-hidden" => "true"}
+              = current_user.display_notifications.unread.count
+            - else
+              %i.fa.fa-bell-o{"aria-hidden" => "true"}
+        %li.nav-item
+          %a.nav-link{:href => user_path(current_user)}
+            = image_tag(model_avatar(current_user.avatar, 200, true), width: 25, class: 'mr-1 rounded-circle')
+            = current_user.first_name
+        %li.nav-item.dropdown
+          %a#navbarDropdownMenuLink.nav-link.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => user_path(current_user)}
+          .dropdown-menu.dropdown-menu-right{"aria-labelledby" => "navbarDropdownMenuLink"}
+            %a.dropdown-item{:href => edit_user_registration_path} Settings
+            %a.dropdown-item{:href => resumes_path } Resumes
+
+            - if user_signed_in? && current_user.is_admin
+              .dropdown-divider
+              %a.dropdown-item{:href => rails_admin_path } Admin
+
+            .dropdown-divider
+            %a.dropdown-item{:href => destroy_user_session_path} Logout

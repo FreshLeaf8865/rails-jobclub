@@ -1,0 +1,2 @@
+- split = notification.activity_key.split(".")
+= render partial: "/notifications/#{split[0]}/#{split[1]}", locals: { notification: notification, activity: notification.activity, user: notification.user }      
