@@ -13,8 +13,9 @@
       = form_for @user, url: wizard_path, method: :put do |f|
         = f.fields_for :user_roles do |user_role_form|
           .form-group
-            = user_role_form.collection_select(:role_id, Role.alphabetical, :id, :name, {}, {class: "form-control form-control-lg"})
-            %small.form-text.text-muted 
+            = user_role_form.text_field :roles, class: "form-control autocomplete_role", value: user_role_form.object.role.present? ? user_role_form.object.role.name : '', autocomplete: :off
+            = user_role_form.hidden_field :role_id, class: "autocomplete_role_id", value: user_role_form.object.role.present? ? user_role_form.object.role_id : ''
+            %small.form-text.text-muted
               You can add more roles later.
 
         .form-group
@@ -25,4 +26,4 @@
             Where do you currently work?
 
         = f.submit "Next", class: "btn btn-primary btn-lg btn-block"
-
+        
