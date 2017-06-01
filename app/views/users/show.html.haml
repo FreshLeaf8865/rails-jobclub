@@ -82,7 +82,7 @@
             - unless viewing_self?(@user)
               = link_to_follow_user(@user, current_user)
             = link_to followers_user_path(@user) do
-              %span.user_followers_count
+              %span.user_followers_count_cache
                 = pluralize(@user.followers.count, "Follower")
             ·
             = link_to following_user_path(@user) do

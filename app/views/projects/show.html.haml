@@ -3,7 +3,7 @@
 - set_meta_tags og: {type: "article", image: model_image(@project.image, 800, 600, true)}
 
 
-.container.mt-5.mb-5
+.container.content_container
   .row
     .col-sm-8
       = image_tag(model_image(@project.image, 800, 600, true), alt: @project.name, class: "img-fluid")

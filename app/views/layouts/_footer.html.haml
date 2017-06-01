@@ -36,8 +36,3 @@
 
   ga('create', "#{Rails.application.secrets.google_analytics_id}", 'auto');
   ga('send', 'pageview');
-
-- if user_signed_in?
-  :coffeescript
-    $(document).ready ->
-      OneSignal.push(["sendTags", {user_id: "#{current_user.id}"}]);

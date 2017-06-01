@@ -23,10 +23,3 @@
 
     %p.mt-3
       = link_to_follow_user(user, active_user)
-
-/ .media.mb-2
-/   = render partial: "/public_activity/user_avatar", locals: {user: user}
-/   .media-body
-/     = link_to user.display_name, user
-/     joined!
-/     = render partial: "/public_activity/time_ago", locals: {activity: activity}

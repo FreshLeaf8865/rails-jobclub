@@ -4,7 +4,7 @@ RSpec.describe ConversationUser, type: :model do
   let(:user) { FactoryGirl.build(:user) }
   let(:conversation_user) { FactoryGirl.build(:conversation_user, user: user) }
   let(:conversation) { conversation_user.conversation}
-  
+
   subject { conversation_user }
 
   describe "associations" do
@@ -25,35 +25,40 @@ RSpec.describe ConversationUser, type: :model do
 
   describe "unread_messages_count" do
     let(:other_user) { FactoryGirl.create(:user) }
-    
+
     it "should calculate unread_messages_count" do
       message1 = FactoryGirl.create(:message, user: user, conversation: conversation)
       message2 = FactoryGirl.create(:message, user: other_user, conversation: conversation)
       message3 = FactoryGirl.create(:message, user: user, conversation: conversation)
 
+      conversation.users = [user, other_user]
+      conversation.save
+
       expect(conversation.conversation_users.count).to eq(2)
-      
+
       conversation_user = conversation.conversation_users.first
+      conversation_user.update_unread_messages_count
       expect(conversation_user.unread_messages_count).to eq(1)
 
       other_conversation_user = conversation.conversation_users.last
-      expect(other_conversation_user.unread_messages_count).to eq(1)
+      other_conversation_user.update_unread_messages_count
+      expect(other_conversation_user.unread_messages_count).to eq(2)
 
       conversation_user.update_unread_messages_count
       expect(conversation_user.unread_messages_count).to eq(1)
 
       message1.read_by!(other_user)
-      message2.read_by!(user)
+      other_conversation_user.update_unread_messages_count
+      expect(other_conversation_user.unread_messages_count).to eq(1)
 
+      message2.read_by!(user)
       conversation_user.update_unread_messages_count
       expect(conversation_user.unread_messages_count).to eq(0)
-
-      expect(other_conversation_user.unread_messages_count).to eq(1)
 
       message3.read_by!(other_user)
       other_conversation_user.update_unread_messages_count
       expect(other_conversation_user.unread_messages_count).to eq(0)
     end
   end
- 
+
 end

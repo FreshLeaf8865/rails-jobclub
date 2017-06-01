@@ -14,11 +14,11 @@ class Conversation < ApplicationRecord
   # Validations
   validates :slug, :uniqueness => true, :presence => true
   validates :key, uniqueness: {case_sensitive: false}, :allow_blank => true
-  
+
   # Callbacks
   before_validation :ensure_slug, on: :create
   before_validation :update_key
-  
+
   def ensure_slug
     if slug.blank?
       self.slug = loop do
@@ -55,5 +55,11 @@ class Conversation < ApplicationRecord
     conversation.users = users
     conversation.save
     return conversation
+  end
+
+  def update_unread_counts
+    conversation_users.each do |conversation_user|
+      conversation_user.update_unread_messages_count
+    end
   end
 end

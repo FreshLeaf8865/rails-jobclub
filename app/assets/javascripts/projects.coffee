@@ -5,6 +5,20 @@ $(document).ready ->
   Mousetrap.bind 'right', ->
     document.getElementById("next_project").click()
     return
+
+  $('.project_form').formValidation(
+    framework: 'bootstrap4'
+    icon:
+      valid: 'fa fa-check'
+      invalid: 'fa fa-times'
+      validating: 'fa fa-refresh'
+    fields:
+      'project[name]':
+        validators:
+          notEmpty: 
+            message: 'Name is required.'
+    )
+
   $('#project_skills_list').selectize
     plugins: ['remove_button']
     delimiter: ','

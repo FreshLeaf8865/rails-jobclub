@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 5.0.2'
+gem 'rails', '~> 5.0.3'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.0'
 gem 'sass-rails', '~> 5.0'
@@ -81,7 +81,7 @@ gem 'omniauth-google-oauth2'
 gem 'sendgrid-ruby'
 gem 'rails_admin', '~> 1.0'
 gem 'wicked'
-gem 'counter_culture', '~> 1.0'
+gem 'counter_culture', '1.6.2'
 gem 'dragonfly', '~> 1.1.1'
 gem 'cloudinary'
 gem 'dalli'

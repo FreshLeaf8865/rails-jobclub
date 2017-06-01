@@ -18,17 +18,6 @@ class Message < ApplicationRecord
   validates :conversation, presence: true
   validates :text, presence: true
 
-  # Callbacks
-  after_commit :update_unread_counts, on: :create
-
-  def create_conversation_user
-    conversation_user = conversation.conversation_users.where(user: user, conversation: conversation).first_or_create
-  end
-
-  def update_unread_counts
-    create_conversation_user.update_unread_messages_count
-  end
-
   def read_by!(read_by_user)
     return if read_by_user == user
     self.create_activity_once key: MessageReadActivity::KEY, owner: read_by_user, published: false, private: true, recipient: conversation

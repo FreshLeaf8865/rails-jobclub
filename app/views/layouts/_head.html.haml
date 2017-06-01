@@ -12,13 +12,16 @@
     }]);
 
   %meta{:name => "viewport", :content => "width=device-width, initial-scale=1.0"}
-  
+  /for appending count before title
+  - if user_signed_in?
+    - total_unread_msg_count = current_user.total_unread_msg_count
+    - title "(#{total_unread_msg_count})" + title if total_unread_msg_count > 0
   = display_meta_tags site: 'HireClub', reverse: true, og: { title: :title, image: image_path("og_meta.png")}, fb: {app_id: Rails.application.secrets.facebook_app_id}
-  
+
   = stylesheet_link_tag 'application', media: 'all'
-  
+
   %script{:src => "https://use.fontawesome.com/c1a60c5ded.js"}
-  
+
   = csrf_meta_tags
 
   %link{:href => image_path("favicon/apple-touch-icon-57x57.png"), :rel => "apple-touch-icon-precomposed", :sizes => "57x57"}
@@ -44,15 +47,18 @@
   %meta{:content => image_path("favicon/mstile-310x310.png"), :name => "msapplication-square310x310logo"}
 
   %meta{:name => "currentUser", :content => current_user.try(:id)}
-  
-  :javascript
-    (function(d) {
-      var config = {
-        kitId: 'hfy6svk',
-        scriptTimeout: 3000,
-        async: true
-      },
-      h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-    })(document);
-  
+
+  <script src="https://use.typekit.net/hfy6svk.js"></script>
+  <script>try{Typekit.load({ async: false });}catch(e){}</script>
+
+  / :javascript
+  /   (function(d) {
+  /     var config = {
+  /       kitId: 'hfy6svk',
+  /       scriptTimeout: 3000,
+  /       async: false
+  /     },
+  /     h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='https://use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+  /   })(document);
+
   = yield :head

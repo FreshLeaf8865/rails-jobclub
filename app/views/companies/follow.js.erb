@@ -1,5 +1,5 @@
 var button = $('.company_follow_btn_<%= @company.id %>');
 button.replaceWith("<%=j link_to_follow_company(@company, current_user) %>");
 
-var count = $('.company_followers_count')
+var count = $('.company_<%= @company.id %>_followers_count')
 count.text("<%= pluralize(@company.followers.count, 'Follower') %>")

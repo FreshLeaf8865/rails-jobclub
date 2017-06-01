@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170523221748) do
+ActiveRecord::Schema.define(version: 20170524150824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,8 +79,8 @@ ActiveRecord::Schema.define(version: 20170523221748) do
   end
 
   create_table "companies", force: :cascade do |t|
-    t.string   "name",                         null: false
-    t.citext   "slug",                         null: false
+    t.string   "name",                               null: false
+    t.citext   "slug",                               null: false
     t.string   "avatar_uid"
     t.string   "logo_uid"
     t.string   "twitter_url"
@@ -89,12 +89,12 @@ ActiveRecord::Schema.define(version: 20170523221748) do
     t.string   "angellist_url"
     t.string   "website_url"
     t.string   "tagline"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "facebook_id"
     t.integer  "added_by_id"
-    t.string   "tags",            default: [],              array: true
-    t.integer  "followers_count", default: 0,  null: false
+    t.string   "tags",                  default: [],              array: true
+    t.integer  "followers_count_cache", default: 0,  null: false
     t.index ["added_by_id"], name: "index_companies_on_added_by_id", using: :btree
     t.index ["facebook_id"], name: "index_companies_on_facebook_id", unique: true, using: :btree
     t.index ["slug"], name: "index_companies_on_slug", unique: true, using: :btree
@@ -463,7 +463,7 @@ ActiveRecord::Schema.define(version: 20170523221748) do
     t.boolean  "open_to_new_opportunities",    default: false, null: false
     t.boolean  "is_us_work_authorized"
     t.boolean  "requires_us_visa_sponsorship"
-    t.integer  "followers_count",              default: 0,     null: false
+    t.integer  "followers_count_cache",        default: 0,     null: false
     t.index ["company_id"], name: "index_users_on_company_id", using: :btree
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true, using: :btree
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree

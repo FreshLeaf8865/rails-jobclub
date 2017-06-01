@@ -1,34 +1,32 @@
-= form_for @project do |f|
-  - if @project.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@project.errors.count, "error")} prohibited this project from being saved:"
-      %ul
-        - @project.errors.full_messages.each do |msg|
-          %li= msg
+= form_for @project, html: {class: "project_form"} do |f|
+  / - if @project.errors.any?
+  /   #error_explanation
+  /     %h2= "#{pluralize(@project.errors.count, "error")} prohibited this project from being saved:"
+  /     %ul
+  /       - @project.errors.each_with_index do |msg, i|
+  /         %li= msg[1]
   .row
-    .col-6
-      .form-group
-        = f.label 'Image Upload'
+    .col-sm-6
+      .form-group{class: ("has-danger" if @project.errors[:image_uid].present?)}
+        = f.label 'Image', class: "form-control-label"
         %br
-        = image_tag(model_image(@project.image, 800, 600, true), width: 300)
-        = f.file_field :image, class: 'form-control-file mt-2'
-        = f.hidden_field :retained_image
-        
-        %small.form-text.text-muted
-          800x600 minimum. JPG, PNG, or GIF.
-        %small.form-text.text-muted
-          10MB maximum file size.
-      .form-group
-        = f.label "Or Paste URL to Image"
-        = f.text_field :image_url, placeholder: "http://hireclub.co/logo.jpg", class: 'form-control'      
+        = f.hidden_field :image_uid
+        = image_tag(model_image(@project.image, 800, 600, true), width: "100%", id: "image_preview", class: "rounded open_uploader form_image")
+        - if @project.errors[:image_uid].present?
+          .form-control-feedback
+            %small
+              Image is Required
+        %p
+          = link_to "Upload Image", "javascript:void(0)", class: "mt-3 btn btn-secondary btn-block open_uploader", id: "upload_widget_opener"
+        %p
+          %small.form-text.text-muted
+            800x600 minimum. JPG, PNG, or GIF. 10MB maximum file size.
       
-    .col-6
+    .col-sm-6
       .form-group
         = f.label :name
         = f.text_field :name, class: 'form-control'
-      .form-group
-        = f.label "Link To"
-        = f.text_field :link, class: 'form-control', placeholder: "http://"
+
       .form-group
         = f.label "Skills"
         = f.text_field :skills_list, placeholder: "Design, Rails, Marketing"
@@ -39,15 +37,18 @@
         = f.hidden_field :company_id, value: @project.company_id, class: "autocomplete_company_id"
 
       .form-group
-        = f.label :position
-        = f.number_field :position, class: 'form-control', min: 0
-
+        = f.label "Link To"
+        = f.text_field :link, class: 'form-control', placeholder: "http://"
+      
       .form-group
         = f.label :description
         = f.text_area :description, class: 'form-control', placeholder: "Describe the project...", rows: 4
 
-    
-    
+      .form-group
+        = f.label :position
+        = f.number_field :position, class: 'form-control', min: 0
+
+
 
       %hr
       = f.submit 'Save', class: "btn btn-primary btn-lg"
@@ -59,3 +60,30 @@
 
 :javascript
   var simplemde = new SimpleMDE({ element: document.getElementById("project_description") });
+
+%script{:src => "//widget.cloudinary.com/global/all.js", :type => "text/javascript"}
+:javascript
+  elems = document.getElementsByClassName("open_uploader");
+  for (var i = 0; i < elems.length; i++) {
+    elems[i].addEventListener('click', showUploader ,false);
+  }
+  function showUploader(){
+    cloudinary.openUploadWidget({ 
+      cloud_name: "#{Rails.application.secrets.cloudinary_name}", 
+      upload_preset: 'project_upload',
+      cropping: 'server',
+      cropping_aspect_ratio: 1.333333333333333,
+      cropping_show_dimensions: true,
+      resource_type: "image",
+      multiple: false}, 
+      function(error, result) { 
+        console.log(error, result);
+        if(result) {
+          image_uid = result[0].public_id;
+          image_url = result[0].secure_url;
+          $('#project_image_uid').val(image_uid);
+          $('#image_preview').attr("src", image_url)
+        }
+      }
+    );
+  }

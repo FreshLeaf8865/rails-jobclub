@@ -6,6 +6,7 @@ namespace :daily do
     UserRole.counter_culture_fix_counts
     Badge.check_badges
     Project.privatize_projects_without_image
+    Follow.counter_culture_fix_counts
   end
   
 end

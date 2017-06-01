@@ -41,7 +41,7 @@ class User < ApplicationRecord
   scope :recent,       -> { order(created_at: :desc) }
   scope :oldest,       -> { order(created_at: :asc) }
   scope :alphabetical, -> { order(name: :asc) }
-  scope :by_followers, -> { order(followers_count: :desc) }
+  scope :by_followers, -> { order(followers_count_cache: :desc) }
 
   # Associations
   has_many :conversation_users, dependent: :destroy, inverse_of: :user
@@ -179,16 +179,16 @@ class User < ApplicationRecord
   end
 
   def key_words
-    self.user_roles.by_position.limit(3).map(&:name) + self.user_skills.by_position.limit(5).map(&:name) + [ self.location.try(:name_and_parent) ] 
+    self.user_roles.by_position.limit(3).map(&:name) + self.user_skills.by_position.limit(5).map(&:name) + [ self.location.try(:name_and_parent) ]
   end
-  
+
 
   def get_fb_token
     token = self.authentications.facebook.first.token if has_facebook?
   end
-  
+
   def welcome!
-    create_activity_once :welcome, owner: self, private: true
+    create_activity_once :welcome, owner: self, private: false
   end
 
   def primary_role
@@ -232,7 +232,7 @@ class User < ApplicationRecord
 
   def import_facebook_omniauth(omniauth)
     return if omniauth["provider"] != "facebook"
-    
+
     self.email = omniauth["info"]["email"] if !omniauth["info"]["email"].blank? && self.email.blank?
     self.name = omniauth["info"]["name"] if !omniauth["info"]["name"].blank? && self.name.blank?
     self.username = omniauth["info"]["nickname"] if !omniauth["info"]["nickname"].blank? && self.username.blank?
@@ -257,7 +257,7 @@ class User < ApplicationRecord
     self.save
 
     ImportFacebookHistoryJob.perform_later(self, omniauth)
-    
+
     return self
   end
 
@@ -268,7 +268,7 @@ class User < ApplicationRecord
       image_url = omniauth["extra"]["raw_info"]["picture"]
       self.avatar_url = image_url
     end
-    
+
     self.gender = omniauth["extra"]["raw_info"]["gender"] if !omniauth["extra"]["raw_info"]["gender"].blank? && self.gender.blank?
     self.save
 
@@ -282,7 +282,7 @@ class User < ApplicationRecord
       facebook_id = item["id"]
       milestone = Milestone.where(user: self, facebook_id: facebook_id).first_or_initialize
       milestone.description = item["description"] if milestone.description.blank?
-      
+
       start_date = item["start_date"]
       if milestone.start_date.nil?
         if start_date.present?
@@ -305,7 +305,7 @@ class User < ApplicationRecord
       end
 
       company_facebook_id = item["employer"]["id"]
-        
+
       if milestone.company.nil?
         begin
           company = Company.import_facebook_id(company_facebook_id)
@@ -323,13 +323,13 @@ class User < ApplicationRecord
 
   def import_education_from_facebook(education)
     return if education.blank?
-    
+
     education.each do |item|
       type = item["type"]
       facebook_id = item["id"]
       Rails.logger.info puts item.inspect
       if (type == "College" || type == "Graduate School") && facebook_id.present?
-        
+
         year = item["year"]["name"] if item["year"].present?
         school = item["school"]["name"] if item["school"].present?
         break if school.blank?
@@ -341,7 +341,7 @@ class User < ApplicationRecord
 
         milestone.name = "Went to #{school}" if milestone.name.blank?
         school_facebook_id = item["school"]["id"]
-        
+
         if milestone.company.nil?
           begin
             company = Company.import_facebook_id(school_facebook_id)
@@ -352,7 +352,7 @@ class User < ApplicationRecord
         end
 
         milestone.save
-        
+
       end
     end
   end
@@ -382,12 +382,17 @@ class User < ApplicationRecord
       return nil
     end
 
-    suggested = ActiveSupport::Inflector.parameterize(source, separator: '')
-    
+    base = ActiveSupport::Inflector.parameterize(source, separator: '')
+    suggested = base
     user_count = User.where(username: suggested).size
-    return suggested if user_count == 0
+    count = 1
+    while user_count > 0
+      suggested = "#{base}#{count}"
+      user_count = User.where(username: suggested).size
+      count+=1
+    end
 
-    return "#{suggested}#{user_count}"
+    return suggested
   end
 
   # Class Methods
@@ -401,7 +406,7 @@ class User < ApplicationRecord
 
     if auth.present?
       # auth exists, update it
-      user = auth.user      
+      user = auth.user
     elsif signed_in_resource
       # user exists, no auth exists
       user = signed_in_resource
@@ -427,5 +432,10 @@ class User < ApplicationRecord
     user.import_google_omniauth(omniauth)
 
     return user
+  end
+
+ # returns count of total unread messages for a user
+  def total_unread_msg_count
+    conversation_users.sum(:unread_messages_count)
   end
 end

@@ -38,6 +38,11 @@ $badge-padding-y: .4rem;
 @import "conversation";
 @import "jquery.atwho";
 
+.content_container {
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+}
+
 .facebook_blue {
   color: #4e7ad9
 }
@@ -87,4 +92,8 @@ $badge-padding-y: .4rem;
   border-bottom: 2px solid #04080F;
   color: #04080F;
   border-radius: 0;
+}
+
+.has-danger .form_image {
+  border: solid 1px red;
 }

@@ -9,7 +9,7 @@
     %li.nav-item
       %a.nav-link{"data-toggle" => "tab", :href => "#account", :role => "tab"} Account
 
-.container.mt-5.mb-5
+.container.content_container
   .row
     .col-sm-6.offset-sm-3
       = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|

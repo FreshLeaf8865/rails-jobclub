@@ -1,7 +1,25 @@
 - user = activity.owner
-.media.mb-2
-  = render partial: "/public_activity/user_avatar", locals: {user: user}
+
+= render partial: "/public_activity/header", locals: {activity: activity, text: "welcome to HireClub!"}
+
+.media
+  = link_to image_tag(model_avatar(user.avatar, 200, true), width: 100, class: "d-flex align-self-center mr-3 rounded-circle"), user
   .media-body
-    = link_to user.display_name, user
-    Welcome to HireClub!
-    = render partial: "/public_activity/time_ago", locals: {activity: activity}
+    %h5.mt-0
+      = link_to user.display_name, user
+      %small
+        = render partial: "/users/icons", locals: {user: user}
+
+    = user.primary_role_name
+
+    - if user.company.present?
+      ·
+      = user.company.name
+
+    - if user.location.present?
+      ·
+      = user.location.name
+    = "· #{display_years(user.years_experience)} Experience"
+
+    %p.mt-3
+      = link_to_follow_user(user, active_user)

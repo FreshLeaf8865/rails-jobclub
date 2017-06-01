@@ -29,7 +29,7 @@ class Company < ApplicationRecord
   has_tags_list :tags
 
   # Scopes
-  scope :by_followers, -> { order(followers_count: :desc) }
+  scope :by_followers, -> { order(followers_count_cache: :desc) }
   scope :recent,       -> { order(created_at: :desc) }
   scope :oldest,       -> { order(created_at: :asc) }
   scope :alphabetical, -> { order(name: :asc) }

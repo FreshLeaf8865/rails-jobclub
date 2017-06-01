@@ -3,7 +3,7 @@
 - set_meta_tags description: @company.tagline
 - set_meta_tags og: {type: "profile", image: model_image(@company.avatar, 200, 200, true)}
 
-.container.mt-5.mb-5
+.container.content_container
   .row
     .col-sm-8
       .media
@@ -20,8 +20,9 @@
                 = tag
             %br
             = link_to_follow_company(@company, current_user)
-            %span.company_followers_count
-              = pluralize(@company.followers.count, "Follower")
+            %span{class: "company_#{@company.id}_followers_count"}
+              = pluralize(@company.followers_count_cache, "Follower")
+            
 
     .col-sm-3
       = link_to 'Edit', edit_company_path(@company), class: "btn btn-info btn-block" if policy(@company).edit?

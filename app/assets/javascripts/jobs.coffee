@@ -1,4 +1,17 @@
-$(document).ready ->      
+$(document).ready -> 
+  $('.job_form').formValidation(
+    framework: 'bootstrap4'
+    icon:
+      valid: 'fa fa-check'
+      invalid: 'fa fa-times'
+      validating: 'fa fa-refresh'
+    fields:
+      'job[name]':
+        validators:
+          notEmpty: 
+            message: 'Title is required.'
+    )
+
   $('#job_skills_list').selectize
     plugins: ['remove_button']
     delimiter: ','

@@ -18,12 +18,8 @@ RSpec.describe Company, type: :model do
   describe 'validations' do
     it { should validate_presence_of(:name) }
     it { should validate_uniqueness_of(:name).case_insensitive }
-
     it { should validate_uniqueness_of(:slug).case_insensitive }
     it { should validate_uniqueness_of(:facebook_id) }
-
-    it { is_expected.to allow_value("http://kidbombay.com", "https://kidbombay.com").for(:website_url) }
-    # it { is_expected.not_to allow_value("kidbombay.com", "foo").for(:website_url) }
   end
 
   describe 'seed' do
@@ -204,4 +200,42 @@ RSpec.describe Company, type: :model do
     it { is_expected.to allow_value("foo.com", "foo.co", "foo.design", "foo.design/username").for(:website_url) }
   end
 
+  describe "followers_count_cache" do
+    it "should cache followers_count_cache" do
+      updated_at = company.updated_at
+      3.times do
+        user = FactoryGirl.create(:user)
+        user.follow(company)
+      end
+      company.reload
+
+      expect(company.followers.count).to eq(3)
+      expect(company.followers_count_cache).to eq(3)
+      expect(company.updated_at).to be > updated_at
+    end
+  end
+
+  describe "scopes" do
+    it "should sort by_followers" do
+      user1 = FactoryGirl.create(:user)
+      user2 = FactoryGirl.create(:user)
+      user3 = FactoryGirl.create(:user)
+
+      company1 = FactoryGirl.create(:company)
+      company2 = FactoryGirl.create(:company)
+      company3 = FactoryGirl.create(:company)
+      user1.follow(company3)
+      user2.follow(company3)
+      user3.follow(company3)
+
+      user1.follow(company2)
+      user2.follow(company2)
+
+      expect(Company.by_followers[0]).to eq company3
+      expect(Company.by_followers[1]).to eq company2
+      expect(Company.by_followers[2]).to eq company1
+
+      puts Company.by_followers.map(&:followers_count_cache)
+    end
+  end
 end

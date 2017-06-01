@@ -40,14 +40,14 @@ class Project < ApplicationRecord
 
   # Validations
   validates :name, presence: true
-  validates :image, presence: true
+  validates :image_uid, presence: true
   validates :slug, uniqueness: { case_sensitive:false }
   validates :position, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates_size_of :image, maximum: 5.megabytes
   validates_property :format, of: :image, in: ['jpeg', 'png', 'gif', 'jpg']
   validate :skills_exist
-  validates_property :width, of: :image, in: (400..10000)
-  validates_property :height, of: :image, in: (300..10000)
+  # validates_property :width, of: :image, in: (400..10000)
+  # validates_property :height, of: :image, in: (300..10000)
 
   # Broadcasts
   after_initialize :subscribe_listeners
